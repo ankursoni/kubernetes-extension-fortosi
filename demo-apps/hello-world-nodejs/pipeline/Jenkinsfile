@@ -1,0 +1,66 @@
+pipeline {
+    agent { label 'jenkins-agent' }
+
+    environment {
+        APP_NAME="hello-world-nodejs"
+        APP_PATH="demo-apps/$APP_NAME"
+        CICD_PATH="$APP_PATH/pipeline"
+        KUBERNETES_NAMESPACE="default"
+        BRANCH=sh(returnStdout: true, script:"echo -n $GIT_BRANCH | sed s/[/\\]/-/g")
+        GITTAGHASH=sh(returnStdout: true, script: "echo -n \$(git tag | tail -n1)-\$(git rev-parse --short HEAD)")
+        VERSION="$BRANCH-$GITTAGHASH"
+        IMAGE="$CONTAINER_REGISTRY_URL/$CONTAINER_REPOSITORY_NAME/$APP_NAME:$VERSION"
+        LATEST_IMAGE="$CONTAINER_REGISTRY_URL/$CONTAINER_REPOSITORY_NAME/$APP_NAME:$BRANCH-latest"
+    }
+
+    stages {
+        stage ("Build") {
+            steps {
+                sh "env"
+                sh "docker build -t $IMAGE $APP_PATH/."
+            }
+        }
+        stage ("Test") {
+            steps {
+                sh "docker build -t test-$IMAGE -f $APP_PATH/tests/Dockerfile --build-arg BUILD_IMAGE=$IMAGE $APP_PATH/."
+            }
+        }
+        stage ("Publish") {
+            steps {
+                withCredentials(
+                    bindings: [
+                        usernamePassword(credentialsId: "container-registry-credentials", usernameVariable: "CONTAINER_REGISTRY_USER_NAME", passwordVariable: "CONTAINER_REGISTRY_USER_PASSWORD")
+                    ]
+                ) {
+                    sh "docker login -u $CONTAINER_REGISTRY_USER_NAME -p $CONTAINER_REGISTRY_USER_PASSWORD $CONTAINER_REGISTRY_URL"
+                }
+                sh "docker push $IMAGE"
+                sh "docker tag $IMAGE $LATEST_IMAGE"
+                sh "docker push $LATEST_IMAGE"
+            }
+        }
+        stage ("Deploy") {
+            steps {
+                script {
+                    sh "cd $CICD_PATH; chmod +x *.sh"
+                    if (env.ENABLE_LOCAL_DOCKER == 'true') {
+                        sh "cd $CICD_PATH; ./docker.sh $APP_NAME $LATEST_IMAGE"
+                    }
+                    else {
+                        sh "cd $CICD_PATH; ./kubernetes.sh $KUBERNETES_NAMESPACE $CONTAINER_REGISTRY_URL $CONTAINER_REPOSITORY_NAME $LATEST_IMAGE $APP_NAME"
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            sh "docker rmi \$(docker images -f label=build=temp -q) --force || exit 0"
+            sh "docker rmi $IMAGE --force || exit 0"
+            script {
+                if (!env.ENABLE_LOCAL_DOCKER) { sh "docker rmi $LATEST_IMAGE --force || exit 0" }
+            }
+        }
+    }
+}

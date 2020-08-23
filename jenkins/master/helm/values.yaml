@@ -1,0 +1,14 @@
+namespace: <CICD_NAMESPACE>
+dockerConfig: '<DOCKER_CONFIG>'
+image:
+  registry: <CONTAINER_REGISTRY_URL>
+  repository: <CONTAINER_REPOSITORY_NAME>
+  name: <JENKINS_IMAGE_NAME>
+  tag: jenkins-master
+  pullPolicy: Always
+storageAccount:
+  name: <STORAGE_ACCOUNT_NAME>
+  key: <STORAGE_ACCOUNT_KEY>
+managedDisk:
+  name: <MANAGED_DISK_NAME>
+  uri: /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<MANAGED_DISK_RG>/providers/Microsoft.Compute/disks/<MANAGED_DISK_NAME>

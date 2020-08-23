@@ -1,0 +1,6 @@
+namespace: <NAMESPACE>
+image:
+  registry: <CONTAINER_REGISTRY_URL>
+  repository: <CONTAINER_REPOSITORY_NAME>
+  nameWithTag: <IMAGE_WITH_TAG>
+  pullPolicy: Always

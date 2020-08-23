@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-nodejs-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world-nodejs-app
+  template:
+    metadata:
+      namespace: {{ .Values.namespace }}
+      labels:
+        app: hello-world-nodejs-app
+    spec:
+      imagePullSecrets:
+        - name: container-registry-secret
+      containers:
+        - name: jenkins-master-app
+          image: {{ .Values.image.nameWithTag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 0.1Gi
+            limits:
+              cpu: 200m
+              memory: 0.2Gi

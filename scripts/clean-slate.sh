@@ -1,0 +1,19 @@
+#!/bin/bash
+# locally executed script assumes the current/execution directory:
+# "cd infra"
+# $1 - enable terraform state cleanup
+
+if [ -s terraform.tfstate ]
+then
+  echo -e "\nTerraform destroy"
+  terraform destroy -auto-approve -var-file=azurerm-secret.tfvars
+fi
+
+if [ ! -z "$1" ] && ( $1 )
+then
+  echo -e "\nDeleting terraform state"
+  rm terraform.tfstate* -rf
+
+  echo -e "\nDeleting terraform providers"
+  rm .terraform -rf
+fi

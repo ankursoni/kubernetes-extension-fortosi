@@ -1,0 +1,7 @@
+**/?*secret*
+**/.terraform
+**/*.tfstate*
+**/bin/*
+**/obj/*
+**/results/*
+**/node_modules/*

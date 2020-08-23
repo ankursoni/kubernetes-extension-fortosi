@@ -1,0 +1,7 @@
+namespace: <CICD_NAMESPACE>
+image:
+  registry: <CONTAINER_REGISTRY_URL>
+  repository: <CONTAINER_REPOSITORY_NAME>
+  name: <JENKINS_IMAGE_NAME>
+  tag: jenkins-agent
+  pullPolicy: Always

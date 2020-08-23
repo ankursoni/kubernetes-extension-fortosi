@@ -1,0 +1,19 @@
+{
+  "name": "hello-world-nodejs",
+  "version": "1.0.0",
+  "description": "hello-world-nodejs",
+  "private": true,
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^7.1.2"
+  },
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "author": "",
+  "license": "ISC"
+}

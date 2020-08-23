@@ -1,0 +1,9 @@
+configuration-as-code:latest
+credentials-binding:latest
+git:latest
+github-branch-source:latest
+pipeline-model-definition:latest
+pipeline-stage-view:latest
+job-dsl:latest
+docker-plugin:latest
+kubernetes:latest

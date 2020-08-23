@@ -1,0 +1,139 @@
+jenkins:
+  systemMessage: "Configured automatically.\n"
+
+  globalNodeProperties:
+  - envVars:
+      env:
+      - key: CONTAINER_REGISTRY_URL
+        value: <CONTAINER_REGISTRY_URL>
+      - key: CONTAINER_REPOSITORY_NAME
+        value: <CONTAINER_REPOSITORY_NAME>
+      - key: ENABLE_LOCAL_DOCKER
+        value: <ENABLE_LOCAL_DOCKER>
+
+  clouds:
+    - docker:
+        name: "docker"
+        disabled:
+          enabledByChoice: <ENABLE_LOCAL_DOCKER>
+        dockerApi:
+          dockerHost:
+            uri: "unix:///var/run/docker.sock"
+          connectTimeout: 60
+          readTimeout: 60
+        containerCap: 25
+        templates:
+          - name: "jenkins-agent"
+            labelString: "jenkins-agent"
+            pullTimeout: 300
+            remoteFs: "/home/jenkins/agent"
+            retentionStrategy:
+              idleMinutes: 15
+            dockerTemplateBase:
+              image: "<CONTAINER_REGISTRY_URL>/<CONTAINER_REPOSITORY_NAME>/<JENKINS_IMAGE_NAME>:jenkins-agent"
+              pullCredentialsId: "container-registry-credentials"
+              volumes:
+                - "/var/run/docker.sock:/var/run/docker.sock"
+            connector:
+              attach:
+                user: 
+
+    - kubernetes:
+        name: "kubernetes"
+        directConnection: false
+        jenkinsUrl: http://jenkins-master-internal-svc.<CICD_NAMESPACE>:8080
+        containerCapStr: 25
+        maxRequestsPerHostStr: 64
+        connectTimeout: 60
+        readTimeout: 60
+        retentionTimeout: 5
+        templates:
+          - name: "jenkins-agent"
+            label: "jenkins-agent"
+            idleMinutes: 15
+            yamlMergeStrategy: "override"
+            yaml: |-
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                labels:
+                  jenkins: agent
+                namespace: <CICD_NAMESPACE>
+              spec:
+                imagePullSecrets:
+                  - name: container-registry-secret
+                containers:
+                  - name: jnlp
+                    image: <CONTAINER_REGISTRY_URL>/<CONTAINER_REPOSITORY_NAME>/<JENKINS_IMAGE_NAME>:jenkins-agent
+                    imagePullPolicy: Always
+                    workingDir: /home/jenkins
+                    env:
+                      - name: JENKINS_URL
+                        value: http://jenkins-master-internal-svc.<CICD_NAMESPACE>:8080
+                      - name: JENKINS_TUNNEL
+                        value: jenkins-master-internal-svc.<CICD_NAMESPACE>:50000
+                    volumeMounts:
+                      - mountPath: /var/run/docker.sock
+                        name: host-docker-sock
+                      - mountPath: ~/.kube
+                        name: azure-fileshare
+                    resources:
+                      requests:
+                        cpu: 500m
+                        memory: 0.5Gi
+                      limits:
+                        cpu: 1000m
+                        memory: 1Gi
+                volumes:
+                  - name: host-docker-sock
+                    hostPath:
+                      path: /var/run/docker.sock
+                  - name: azure-fileshare
+                    azureFile:
+                      secretName: azure-fileshare-secret
+                      shareName: deployment-kubeconfig
+                      readOnly: true
+
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          id: "github-credentials"
+          description: "github-credentials"
+          scope: GLOBAL
+          username: "<GITHUB_USER_NAME>"
+          password: "<GITHUB_USER_PAT>"
+      - usernamePassword:
+          id: "container-registry-credentials"
+          description: "container-registry-credentials"
+          scope: GLOBAL
+          username: "<CONTAINER_REGISTRY_USER_NAME>"
+          password: "<CONTAINER_REGISTRY_USER_PASSWORD>"
+
+jobs:
+  - script: >
+      organizationFolder("<GITHUB_ORG>-init") {
+        displayName("<GITHUB_ORG>-init")
+        organizations {
+          github {
+            credentialsId("github-credentials")
+            repoOwner("<GITHUB_ORG>")
+            traits {
+              gitHubBranchDiscovery {
+                strategyId(3)
+              }
+              sourceWildcardFilter  {
+                includes("<INIT_REPO>")
+                excludes("")
+              }
+            }
+          }
+        }
+        configure {
+          it / 'projectFactories' / 'org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProjectFactory' << 'scriptPath'('Jenkinsfile')
+        }
+        triggers {
+            periodic(1800)
+        }
+      }

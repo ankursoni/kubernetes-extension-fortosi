@@ -1,0 +1,10 @@
+{
+	"auths": {
+		"<CONTAINER_REGISTRY_URL>": {
+			"auth": "<CONTAINER_REGISTRY_AUTH>"
+		}
+	},
+	"HttpHeaders": {
+		"User-Agent": "Docker-Client/19.03.8 (linux)"
+	}
+}
