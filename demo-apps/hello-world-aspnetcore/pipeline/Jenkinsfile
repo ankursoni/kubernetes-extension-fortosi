@@ -1,4 +1,4 @@
-library identifier: 'cicd',
+library identifier: 'cicd@master',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         remote: 'https://github.com/ankursoni/kubernetes-extension-fortio.git',
