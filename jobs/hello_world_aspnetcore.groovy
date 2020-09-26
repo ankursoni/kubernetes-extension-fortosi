@@ -9,7 +9,7 @@ multibranchPipelineJob("hello-world-aspnetcore") {
                 traitBlock << 'jenkins.plugins.git.traits.CloneOptionTrait' {
                     extension(class: 'hudson.plugins.git.extensions.impl.CloneOption') {
                         shallow(false)
-                        noTag(false)
+                        noTag(true)
                         reference("")
                         honorRefspec(false)
                     }
