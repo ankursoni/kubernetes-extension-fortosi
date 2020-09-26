@@ -3,26 +3,31 @@ pipeline {
 
     environment {
         APP_NAME="hello-world-nodejs"
-        APP_PATH="demo-apps/$APP_NAME"
-        CICD_PATH="$APP_PATH/pipeline"
+        APP_PATH="demo-apps/${APP_NAME}"
+        CICD_PATH="${APP_PATH}/pipeline"
+        MAIN_BRANCH="master"
+        GIT_DESCRIBE=sh(returnStdout: true, script: "echo -n \$(git describe --tags)")
+        IMAGE_VERSION=sh(returnStdout: true, script: "[ $GIT_BRANCH = $MAIN_BRANCH ] && echo -n ${GIT_DESCRIBE} || echo -n ${GIT_BRANCH}-${GIT_DESCRIBE}")
+        IMAGE_NAME="${CONTAINER_REGISTRY_URL}/${CONTAINER_REPOSITORY_NAME}/${APP_NAME}"
+        IMAGE_TAG="${IMAGE_NAME}:${IMAGE_VERSION}"
         KUBERNETES_NAMESPACE="default"
-        BRANCH=sh(returnStdout: true, script:"echo -n $GIT_BRANCH | sed s/[/\\]/-/g")
-        GITTAGHASH=sh(returnStdout: true, script: "echo -n \$(git tag | tail -n1)-\$(git rev-parse --short HEAD)")
-        VERSION="$BRANCH-$GITTAGHASH"
-        IMAGE="$CONTAINER_REGISTRY_URL/$CONTAINER_REPOSITORY_NAME/$APP_NAME:$VERSION"
-        LATEST_IMAGE="$CONTAINER_REGISTRY_URL/$CONTAINER_REPOSITORY_NAME/$APP_NAME:$BRANCH-latest"
     }
 
     stages {
         stage ("Build") {
             steps {
                 sh "env"
-                sh "docker build -t $IMAGE $APP_PATH/."
+                sh "docker build \
+                        -t ${IMAGE_TAG} ${APP_PATH}/. \
+                        -f Dockerfile ."
             }
         }
         stage ("Test") {
             steps {
-                sh "docker build -t test-$IMAGE -f $APP_PATH/tests/Dockerfile --build-arg BUILD_IMAGE=$IMAGE $APP_PATH/."
+                sh "docker build \
+                        -t ${IMAGE_TAG}-test \
+                        --build-arg BUILD_IMAGE="${IMAGE_TAG}" ${APP_PATH}/. \
+                        -f ${APP_PATH}/tests/Dockerfile"
             }
         }
         stage ("Publish") {
@@ -32,22 +37,20 @@ pipeline {
                         usernamePassword(credentialsId: "container-registry-credentials", usernameVariable: "CONTAINER_REGISTRY_USER_NAME", passwordVariable: "CONTAINER_REGISTRY_USER_PASSWORD")
                     ]
                 ) {
-                    sh "docker login -u $CONTAINER_REGISTRY_USER_NAME -p $CONTAINER_REGISTRY_USER_PASSWORD $CONTAINER_REGISTRY_URL"
+                    sh "docker login -u ${CONTAINER_REGISTRY_USER_NAME} -p ${CONTAINER_REGISTRY_USER_PASSWORD} ${CONTAINER_REGISTRY_URL}"
                 }
-                sh "docker push $IMAGE"
-                sh "docker tag $IMAGE $LATEST_IMAGE"
-                sh "docker push $LATEST_IMAGE"
+                sh "docker push ${IMAGE_TAG}"
             }
         }
         stage ("Deploy") {
             steps {
                 script {
-                    sh "cd $CICD_PATH; chmod +x *.sh"
+                    sh "cd ${CICD_PATH}; chmod +x *.sh"
                     if (env.ENABLE_LOCAL_DOCKER == 'true') {
-                        sh "cd $CICD_PATH; ./docker.sh $APP_NAME $LATEST_IMAGE"
+                        sh "cd ${CICD_PATH}; ./docker.sh ${APP_NAME} ${IMAGE_TAG}"
                     }
                     else {
-                        sh "cd $CICD_PATH; ./kubernetes.sh $KUBERNETES_NAMESPACE $CONTAINER_REGISTRY_URL $CONTAINER_REPOSITORY_NAME $LATEST_IMAGE $APP_NAME"
+                        sh "cd ${CICD_PATH}; ./kubernetes.sh ${KUBERNETES_NAMESPACE} ${CONTAINER_REGISTRY_URL} ${CONTAINER_REPOSITORY_NAME} ${IMAGE_TAG} ${APP_NAME}"
                     }
                 }
             }
@@ -56,10 +59,13 @@ pipeline {
 
     post {
         always {
-            sh "docker rmi \$(docker images -f label=build=temp -q) --force || exit 0"
-            sh "docker rmi $IMAGE --force || exit 0"
+            sh """
+                docker logout || exit 0
+                docker system prune -f || exit 0
+                docker volume prune -f || exit 0
+            """
             script {
-                if (!env.ENABLE_LOCAL_DOCKER) { sh "docker rmi $LATEST_IMAGE --force || exit 0" }
+                if (!env.ENABLE_LOCAL_DOCKER) { sh "docker rmi --force ${IMAGE_TAG}-test ${IMAGE_TAG} || exit 0" }
             }
         }
     }

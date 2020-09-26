@@ -12,10 +12,4 @@ sed -i "s|<CONTAINER_REGISTRY_URL>|$2|g" values.yaml
 sed -i "s|<CONTAINER_REPOSITORY_NAME>|$3|g" values.yaml
 sed -i "s|<IMAGE_WITH_TAG>|$4|g" values.yaml
 
-isDeployedAlready=$(helm list -f $5 | grep -oP "^$5")
-if [ -z "$isDeployedAlready" ]
-then
-    helm install -f values.yaml $5 .
-else
-    helm upgrade -f values.yaml $5 .
-fi
+helm upgrade -i -f values.yaml $5 .
