@@ -16,30 +16,36 @@ pipeline {
     stages {
         stage ("Build") {
             steps {
-                sh "env"
-                sh "docker build \
-                        -t ${IMAGE_TAG} ${APP_PATH}/. \
-                        -f Dockerfile ."
+                script {
+                    sh "env"
+                    sh "docker build \
+                            -t ${IMAGE_TAG} ${APP_PATH}/. \
+                            -f Dockerfile ."
+                }
             }
         }
         stage ("Test") {
             steps {
-                sh "docker build \
-                        -t ${IMAGE_TAG}-test \
-                        --build-arg BUILD_IMAGE="${IMAGE_TAG}" ${APP_PATH}/. \
-                        -f ${APP_PATH}/tests/Dockerfile"
+                script {
+                    sh "docker build \
+                            -t ${IMAGE_TAG}-test \
+                            --build-arg BUILD_IMAGE="${IMAGE_TAG}" ${APP_PATH}/. \
+                            -f ${APP_PATH}/tests/Dockerfile"
+                }
             }
         }
         stage ("Publish") {
             steps {
-                withCredentials(
-                    bindings: [
-                        usernamePassword(credentialsId: "container-registry-credentials", usernameVariable: "CONTAINER_REGISTRY_USER_NAME", passwordVariable: "CONTAINER_REGISTRY_USER_PASSWORD")
-                    ]
-                ) {
-                    sh "docker login -u ${CONTAINER_REGISTRY_USER_NAME} -p ${CONTAINER_REGISTRY_USER_PASSWORD} ${CONTAINER_REGISTRY_URL}"
+                script {
+                    withCredentials(
+                        bindings: [
+                            usernamePassword(credentialsId: "container-registry-credentials", usernameVariable: "CONTAINER_REGISTRY_USER_NAME", passwordVariable: "CONTAINER_REGISTRY_USER_PASSWORD")
+                        ]
+                    ) {
+                        sh "docker login -u ${CONTAINER_REGISTRY_USER_NAME} -p ${CONTAINER_REGISTRY_USER_PASSWORD} ${CONTAINER_REGISTRY_URL}"
+                    }
+                    sh "docker push ${IMAGE_TAG}"
                 }
-                sh "docker push ${IMAGE_TAG}"
             }
         }
         stage ("Deploy") {
