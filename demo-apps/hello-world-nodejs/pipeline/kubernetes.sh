@@ -12,4 +12,4 @@ sed -i "s|<CONTAINER_REGISTRY_URL>|$2|g" values.yaml
 sed -i "s|<CONTAINER_REPOSITORY_NAME>|$3|g" values.yaml
 sed -i "s|<IMAGE_WITH_TAG>|$4|g" values.yaml
 
-helm upgrade -i -f values.yaml $5 .
+helm upgrade -i -f values.yaml $5 -n $1 .
