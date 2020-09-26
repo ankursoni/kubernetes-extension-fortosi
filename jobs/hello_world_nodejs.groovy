@@ -2,7 +2,7 @@ multibranchPipelineJob("hello-world-nodejs") {
     branchSources {
         git {
             id = "hello-world-nodejs"
-            remote("https://github.com/${ORG_NAME}/kubernetes-extension-fortio.git")
+            remote("https://github.com/ankursoni/kubernetes-extension-fortio.git")
             credentialsId("github-credentials")
             traits {
                 gitBranchDiscovery()
