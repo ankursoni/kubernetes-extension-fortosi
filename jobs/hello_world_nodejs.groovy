@@ -4,21 +4,18 @@ multibranchPipelineJob("hello-world-nodejs") {
             id = "hello-world-nodejs"
             remote("https://github.com/ankursoni/kubernetes-extension-fortio.git")
             credentialsId("github-credentials")
-            configure {
-                def traitBlock = it / 'sources' / 'data' / 'jenkins.branch.BranchSource' / source(class: jenkins.plugins.git.GitSCMSource) / 'traits' 
-                traitBlock << 'jenkins.plugins.git.traits.CloneOptionTrait' {
-                    extension(class: 'hudson.plugins.git.extensions.impl.CloneOption') {
-                        shallow(false)
-                        noTags(false)
-                        reference()
-                        honorRefspec(false)
-                    }
-                }
-            }
         }
     }
     configure {
         it / 'factory' << 'scriptPath'('demo-apps/hello-world-nodejs/pipeline/Jenkinsfile')
+        it / 'sources' / 'data' / 'jenkins.branch.BranchSource' / 'source' << 'traits' {
+            'extension'(class: 'hudson.plugins.git.extensions.impl.CloneOption') {
+                shallow(false)
+                noTags(false)
+                reference()
+                honorRefspec(false)
+            }
+        }
     }
     triggers {
         periodic(5)
