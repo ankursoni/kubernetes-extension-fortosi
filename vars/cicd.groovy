@@ -1,4 +1,4 @@
-def call(string appName) {
+def call(String appName) {
     pipeline {
         agent { label 'jenkins-agent' }
 
