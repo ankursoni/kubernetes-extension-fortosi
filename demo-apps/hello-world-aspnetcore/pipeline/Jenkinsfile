@@ -65,12 +65,12 @@ pipeline {
 
     post {
         always {
-            sh """
-                docker logout || exit 0
-                docker system prune -f || exit 0
-                docker volume prune -f || exit 0
-            """
             script {
+                sh """
+                    docker logout || exit 0
+                    docker system prune -f || exit 0
+                    docker volume prune -f || exit 0
+                """
                 if (!env.ENABLE_LOCAL_DOCKER) { sh "docker rmi --force ${IMAGE_TAG}-test ${IMAGE_TAG} || exit 0" }
             }
         }
