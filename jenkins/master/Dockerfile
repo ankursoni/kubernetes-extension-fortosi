@@ -28,6 +28,8 @@ RUN . /jenkins-vars-secret && \
     rm /jenkins-vars-secret -f
 
 # jenkins automatic plugin installation
+ENV CURL_OPTIONS -sSfL --http1.1
+ENV CURL_CONNECTION_TIMEOUT 60
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
 # switch back to jenkins user

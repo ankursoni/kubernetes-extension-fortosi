@@ -3,6 +3,9 @@
 # or, locally executed script assumes the current/execution directory one level above kubernetes-extension-fortio git directory
 # $1 - secret variables values file
 
+# stop on error
+set -e
+
 # secret variables values file validation
 if [ -z "$1" ] || [ ! -f "$1" ]
 then

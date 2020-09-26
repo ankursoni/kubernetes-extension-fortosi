@@ -3,6 +3,9 @@
 # "cd infra"
 # $1 - enable terraform state cleanup
 
+# stop on error
+set -e
+
 if [ -s terraform.tfstate ]
 then
   echo -e "\nTerraform destroy"
