@@ -4,9 +4,19 @@ CI/CD extension for kubernetes.
 
 ## Deployment architecture
 
-This kubernetes extension has the following deployment topology:
+This kubernetes extension has the following deployment topology in AWS:
 
-![topology](docs/images/topology.png)
+![topology](docs/images/aws-topology.png)
+
+* [Elastic Kubernetes Service](https://aws.amazon.com/eks/) for running Jenkins.
+* Storage
+  * [Elastic File Share](https://aws.amazon.com/efs/) for storing and retrieving kubeconfig files in Azure file share.
+  * [Elastic Block Store](https://aws.amazon.com/ebs/) for storing Jenkins home directory.
+
+
+This kubernetes extension has the following deployment topology in Azure:
+
+![topology](docs/images/azure-topology.png)
 
 * [Azure Kubernetes Service](https://docs.microsoft.com/en-us/azure/aks/) for running Jenkins.
 * Storage
@@ -76,7 +86,7 @@ helm version
 ---
 
 ## Automatic installation of jenkins on kubernetes
-* Option 1: Deploy azure kubernetes cluster (aks) and related resources by following the instructions in [infra/README.md](infra/README.md)
+* Option 1: Deploy azure kubernetes cluster (aks) and related resources by following the instructions in [infra/azure/README.md](infra/azure/README.md)
 * Option 2: Or, bring your own kubernetes cluster along with a storage account and managed disk on which the aks identity has contributor permissions on them.
 * Thereafter, follow these instructions:
 ``` SH

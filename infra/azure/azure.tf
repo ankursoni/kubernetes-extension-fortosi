@@ -27,14 +27,20 @@ variable "vm_count" {
   default = 1
 }
 
+
+terraform {
+  required_version = ">= 0.13.3"
+}
+
 provider "azurerm" {
   subscription_id = var.subscription_id
   tenant_id       = var.tenant_id
   client_id       = var.client_id
   client_secret   = var.client_secret
-  version         = "=2.29.0"
+  version         = "= 2.29.0"
   features {}
 }
+
 
 resource "azurerm_resource_group" "rg01" {
   name     = "${var.prefix}-${var.environment}-rg01"
