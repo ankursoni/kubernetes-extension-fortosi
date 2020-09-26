@@ -5,7 +5,7 @@ multibranchPipelineJob("hello-world-nodejs") {
             remote("https://github.com/ankursoni/kubernetes-extension-fortio.git")
             credentialsId("github-credentials")
             configure {
-                def traitBlock = it / 'sources' / 'data' / 'jenkins.branch.BranchSource' / 'source' / 'traits' 
+                def traitBlock = it / 'sources' / 'data' / 'jenkins.branch.BranchSource' / source(class: jenkins.plugins.git.GitSCMSource) / 'traits' 
                 traitBlock << 'jenkins.plugins.git.traits.CloneOptionTrait' {
                     extension(class: 'hudson.plugins.git.extensions.impl.CloneOption') {
                         shallow(false)
