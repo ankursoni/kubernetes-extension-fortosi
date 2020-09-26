@@ -4,7 +4,7 @@ multibranchPipelineJob("hello-world-nodejs") {
             id = "hello-world-nodejs"
             remote("https://github.com/ankursoni/kubernetes-extension-fortio.git")
             credentialsId("github-credentials")
-            traits {
+            withTraits {
                 gitBranchDiscovery()
                 gitTagDiscovery()
                 cloneOptionTrait {

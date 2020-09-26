@@ -4,7 +4,7 @@ multibranchPipelineJob("hello-world-aspnetcore") {
             id = "hello-world-aspnetcore"
             remote("https://github.com/ankursoni/kubernetes-extension-fortio.git")
             credentialsId("github-credentials")
-            traits {
+            withTraits {
                 gitBranchDiscovery()
                 gitTagDiscovery()
                 cloneOptionTrait {
