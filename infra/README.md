@@ -1,10 +1,10 @@
 # Install terraform
 ```
 {
-  wget https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
-  unzip terraform_0.12.29_linux_amd64.zip
+  wget https://releases.hashicorp.com/terraform/0.13.3/terraform_0.13.3_linux_amd64.zip
+  unzip terraform_0.13.3_linux_amd64.zip
   sudo mv terraform /usr/local/bin/
-  rm terraform_0.12.29_linux_amd64.zip
+  rm terraform_0.13.3_linux_amd64.zip
 }
 ```
 
