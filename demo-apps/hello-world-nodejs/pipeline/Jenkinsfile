@@ -6,7 +6,7 @@ pipeline {
         APP_PATH="demo-apps/${APP_NAME}"
         CICD_PATH="${APP_PATH}/pipeline"
         MAIN_BRANCH="master"
-        GIT_DESCRIBE=sh(returnStdout: true, script: "echo -n \$(git describe --tags)")
+        GIT_DESCRIBE=sh(returnStdout: true, script: "echo -n \$(git describe)")
         IMAGE_VERSION=sh(returnStdout: true, script: "[ $GIT_BRANCH = $MAIN_BRANCH ] && echo -n ${GIT_DESCRIBE} || echo -n ${GIT_BRANCH}-${GIT_DESCRIBE}")
         IMAGE_NAME="${CONTAINER_REGISTRY_URL}/${CONTAINER_REPOSITORY_NAME}/${APP_NAME}"
         IMAGE_TAG="${IMAGE_NAME}:${IMAGE_VERSION}"
@@ -16,42 +16,36 @@ pipeline {
     stages {
         stage ("Build") {
             steps {
-                script {
-                    sh "env"
-                    sh "docker build \
-                            -t ${IMAGE_TAG} ${APP_PATH}/. \
-                            -f Dockerfile ."
-                }
+                sh "env"
+                sh "docker build \
+                        -t ${IMAGE_TAG} ${APP_PATH}/. \
+                        -f Dockerfile ."
             }
         }
         stage ("Test") {
             steps {
-                script {
-                    sh "docker build \
-                            -t ${IMAGE_TAG}-test \
-                            --build-arg BUILD_IMAGE="${IMAGE_TAG}" ${APP_PATH}/. \
-                            -f ${APP_PATH}/tests/Dockerfile"
-                }
+                sh "docker build \
+                        -t ${IMAGE_TAG}-test \
+                        --build-arg BUILD_IMAGE="${IMAGE_TAG}" ${APP_PATH}/. \
+                        -f ${APP_PATH}/tests/Dockerfile"
             }
         }
         stage ("Publish") {
             steps {
-                script {
-                    withCredentials(
-                        bindings: [
-                            usernamePassword(credentialsId: "container-registry-credentials", usernameVariable: "CONTAINER_REGISTRY_USER_NAME", passwordVariable: "CONTAINER_REGISTRY_USER_PASSWORD")
-                        ]
-                    ) {
-                        sh "docker login -u ${CONTAINER_REGISTRY_USER_NAME} -p ${CONTAINER_REGISTRY_USER_PASSWORD} ${CONTAINER_REGISTRY_URL}"
-                    }
-                    sh "docker push ${IMAGE_TAG}"
+                withCredentials(
+                    bindings: [
+                        usernamePassword(credentialsId: "container-registry-credentials", usernameVariable: "CONTAINER_REGISTRY_USER_NAME", passwordVariable: "CONTAINER_REGISTRY_USER_PASSWORD")
+                    ]
+                ) {
+                    sh "docker login -u ${CONTAINER_REGISTRY_USER_NAME} -p ${CONTAINER_REGISTRY_USER_PASSWORD} ${CONTAINER_REGISTRY_URL}"
                 }
+                sh "docker push ${IMAGE_TAG}"
             }
         }
         stage ("Deploy") {
             steps {
+                sh "cd ${CICD_PATH}; chmod +x *.sh"
                 script {
-                    sh "cd ${CICD_PATH}; chmod +x *.sh"
                     if (env.ENABLE_LOCAL_DOCKER == 'true') {
                         sh "cd ${CICD_PATH}; ./docker.sh ${APP_NAME} ${IMAGE_TAG}"
                     }
