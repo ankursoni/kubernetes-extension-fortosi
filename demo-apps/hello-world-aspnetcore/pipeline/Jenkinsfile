@@ -1,2 +1,3 @@
-library 'cicd'
+@Library('cicd') _
+
 cicd("hello-world-aspnetcore")
