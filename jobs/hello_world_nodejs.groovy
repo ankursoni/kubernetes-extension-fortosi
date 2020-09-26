@@ -9,8 +9,8 @@ multibranchPipelineJob("hello-world-nodejs") {
                 traitBlock << 'jenkins.plugins.git.traits.CloneOptionTrait' {
                     extension(class: 'hudson.plugins.git.extensions.impl.CloneOption') {
                         shallow(false)
-                        noTag(true)
-                        reference("")
+                        noTags(false)
+                        reference()
                         honorRefspec(false)
                     }
                 }
