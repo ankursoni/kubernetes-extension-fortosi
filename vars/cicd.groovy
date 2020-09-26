@@ -6,6 +6,7 @@ def call(String appName) {
             APP_NAME="${appName}"
             APP_PATH="demo-apps/${APP_NAME}"
             CICD_PATH="${APP_PATH}/pipeline"
+            SCRIPT_PATH="demo-apps/scripts"
             MAIN_BRANCH="master"
             GIT_DESCRIBE=sh(returnStdout: true, script: "echo -n \$(git describe --always)")
             IMAGE_VERSION=sh(returnStdout: true, script: "[ $GIT_BRANCH = $MAIN_BRANCH ] && echo -n ${GIT_DESCRIBE} || echo -n ${GIT_BRANCH}-${GIT_DESCRIBE}")
@@ -45,13 +46,13 @@ def call(String appName) {
             }
             stage ("Deploy") {
                 steps {
-                    sh "cd ${CICD_PATH}; chmod +x *.sh"
+                    sh "cd ${SCRIPT_PATH}; chmod +x *.sh"
                     script {
                         if (env.ENABLE_LOCAL_DOCKER == 'true') {
-                            sh "cd ${CICD_PATH}; ./docker.sh ${APP_NAME} ${IMAGE_TAG}"
+                            sh "cd ${SCRIPT_PATH}; ./docker.sh ${APP_NAME} ${IMAGE_TAG}"
                         }
                         else {
-                            sh "cd ${CICD_PATH}; ./kubernetes.sh ${KUBERNETES_NAMESPACE} ${CONTAINER_REGISTRY_URL} ${CONTAINER_REPOSITORY_NAME} ${IMAGE_TAG} ${APP_NAME}"
+                            sh "cd ${SCRIPT_PATH}; ./kubernetes.sh ${KUBERNETES_NAMESPACE} ${CONTAINER_REGISTRY_URL} ${CONTAINER_REPOSITORY_NAME} ${IMAGE_TAG} ${APP_NAME}"
                         }
                     }
                 }
