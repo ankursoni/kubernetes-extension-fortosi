@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage("Create Pipeline Jobs") {
             steps {
-                jobDsl targets: ["jobs/*.groovy"]
+                jobDsl targets: "jobs/*.groovy"
             }
         }
     }
