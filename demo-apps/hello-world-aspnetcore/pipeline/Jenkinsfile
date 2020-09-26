@@ -18,18 +18,16 @@ pipeline {
             steps {
                 sh "env"
                 sh "docker build \
-                        -t ${IMAGE_TAG} ${APP_PATH}/. \
-                        -f Dockerfile ."
+                        -f ${APP_PATH}/Dockerfile \
+                        -t ${IMAGE_TAG} ${APP_PATH}/."
             }
         }
         stage ("Test") {
             steps {
-                script {
-                    sh "docker build \
-                            -t ${IMAGE_TAG}-test \
-                            --build-arg BUILD_IMAGE="${IMAGE_TAG}" ${APP_PATH}/. \
-                            -f ${APP_PATH}/tests/Dockerfile"
-                }
+                sh "docker build \
+                        -f ${APP_PATH}/tests/Dockerfile \
+                        --build-arg BUILD_IMAGE=${IMAGE_TAG} \
+                        -t ${IMAGE_TAG}-test ${APP_PATH}/."
             }
         }
         stage ("Publish") {
