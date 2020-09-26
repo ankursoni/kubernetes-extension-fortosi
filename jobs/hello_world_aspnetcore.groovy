@@ -4,13 +4,12 @@ multibranchPipelineJob("hello-world-aspnetcore") {
             id = "hello-world-aspnetcore"
             remote("https://github.com/ankursoni/kubernetes-extension-fortio.git")
             credentialsId("github-credentials")
-            withTraits {
-                gitBranchDiscovery()
-                gitTagDiscovery()
-                cloneOptionTrait {
-                    extension {
+            configure {
+                def traitBlock = it / 'sources' / 'data' / 'jenkins.branch.BranchSource' / 'source' / 'traits' 
+                traitBlock << 'jenkins.plugins.git.traits.CloneOptionTrait' {
+                    extension(class: 'hudson.plugins.git.extensions.impl.CloneOption') {
                         shallow(false)
-                        noTags(false)
+                        noTag(false)
                         reference("")
                         honorRefspec(false)
                     }
