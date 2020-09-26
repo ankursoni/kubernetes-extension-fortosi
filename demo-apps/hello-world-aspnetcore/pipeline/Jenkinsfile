@@ -24,10 +24,12 @@ pipeline {
         }
         stage ("Test") {
             steps {
-                sh "docker build \
-                        -t ${IMAGE_TAG}-test \
-                        --build-arg BUILD_IMAGE="${IMAGE_TAG}" ${APP_PATH}/. \
-                        -f ${APP_PATH}/tests/Dockerfile"
+                script {
+                    sh "docker build \
+                            -t ${IMAGE_TAG}-test \
+                            --build-arg BUILD_IMAGE="${IMAGE_TAG}" ${APP_PATH}/. \
+                            -f ${APP_PATH}/tests/Dockerfile"
+                }
             }
         }
         stage ("Publish") {
