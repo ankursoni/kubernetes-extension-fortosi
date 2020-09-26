@@ -3,7 +3,7 @@ def call(String appName) {
         agent { label 'jenkins-agent' }
 
         environment {
-            APP_NAME=appName
+            APP_NAME="${appName}"
             APP_PATH="demo-apps/${APP_NAME}"
             CICD_PATH="${APP_PATH}/pipeline"
             MAIN_BRANCH="master"
