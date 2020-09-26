@@ -1,3 +1,8 @@
+library identifier: 'custom-lib@master', retriever: modernSCM(
+    [$class: 'GitSCMSource',
+    remote: 'git@github.com/ankursoni/kubernetes-extension-fortio.git',
+    credentialsId: 'github-credentials'])
+
 @Library('cicd') _
 
 cicd("hello-world-nodejs")
