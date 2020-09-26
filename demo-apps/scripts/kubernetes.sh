@@ -5,7 +5,7 @@
 # $4 - container image with tag
 # $5 - app name
 
-cd ../$5/helm
+cd ../$5/pipeline/helm
 
 sed -i "s|<NAMESPACE>|$1|g" values.yaml
 sed -i "s|<CONTAINER_REGISTRY_URL>|$2|g" values.yaml
