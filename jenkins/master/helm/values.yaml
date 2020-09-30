@@ -6,6 +6,10 @@ image:
   name: <JENKINS_IMAGE_NAME>
   tag: jenkins-master
   pullPolicy: Always
+cloudProvider: <CLOUD_PROVIDER>
+efs:
+  jenkinsMasterEfsId: <JENKINS_MASTER_EFS_ID>
+  deploymentKubeconfigEfsId: <DEPLOYMENT_KUBECONFIG_EFS_ID>
 storageAccount:
   name: <STORAGE_ACCOUNT_NAME>
   key: <STORAGE_ACCOUNT_KEY>

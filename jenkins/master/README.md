@@ -55,6 +55,10 @@ sed -i 's|<INIT_REPO>|PLACEHOLDER|g' jenkins-vars-secret
 # enable this flag to true if you want to run jenkins in a local docker environment else keep it false
 sed -i 's|<ENABLE_LOCAL_DOCKER>|PLACEHOLDER|g' jenkins-vars-secret
 
+# substitute the value for <CLOUD_PROVIDER> by replacing PLACEHOLDER in the command
+# PLACEHOLDER e.g. aws or azure
+sed -i 's|<CLOUD_PROVIDER>|PLACEHOLDER|g' jenkins-vars-secret
+
 # verify the jenkins-vars-secret file by displaying its content
 cat jenkins-vars-secret
 
@@ -68,6 +72,7 @@ CONTAINER_REGISTRY_USER_NAME="ankursoni"
 CONTAINER_REGISTRY_USER_PASSWORD="<removed as secret>"
 CICD_NAMESPACE="jenkins"
 ENABLE_LOCAL_DOCKER=true
+CLOUD_PROVIDER=aws
 
 # if there is a correction needed then use text editor 'nano' to update the file and then press ctrl+x after you are done editing
 nano jenkins-vars-secret

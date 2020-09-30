@@ -1,5 +1,5 @@
 # Set the values for the variables by writing to the variables file - values-secret.yaml
-```
+``` SH
 cd jenkins/agent/helm
 
 # copy the template variable file
@@ -37,7 +37,7 @@ image:
 ```
 
 # Output jenkins agent pod yaml
-```
+``` SH
 cd jenkins/agent/helm
 
 helm template -f values-secret.yaml jenkins-agent .

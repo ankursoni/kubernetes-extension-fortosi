@@ -53,46 +53,7 @@ jenkins:
             idleMinutes: 15
             yamlMergeStrategy: "override"
             yaml: |-
-              apiVersion: v1
-              kind: Pod
-              metadata:
-                labels:
-                  jenkins: agent
-                namespace: <CICD_NAMESPACE>
-              spec:
-                imagePullSecrets:
-                  - name: container-registry-secret
-                containers:
-                  - name: jnlp
-                    image: <CONTAINER_REGISTRY_URL>/<CONTAINER_REPOSITORY_NAME>/<JENKINS_IMAGE_NAME>:jenkins-agent
-                    imagePullPolicy: Always
-                    workingDir: /home/jenkins
-                    env:
-                      - name: JENKINS_URL
-                        value: http://jenkins-master-internal-svc.<CICD_NAMESPACE>:8080
-                      - name: JENKINS_TUNNEL
-                        value: jenkins-master-internal-svc.<CICD_NAMESPACE>:50000
-                    volumeMounts:
-                      - mountPath: /var/run/docker.sock
-                        name: host-docker-sock
-                      - mountPath: ~/.kube
-                        name: azure-fileshare
-                    resources:
-                      requests:
-                        cpu: 500m
-                        memory: 0.5Gi
-                      limits:
-                        cpu: 1000m
-                        memory: 1Gi
-                volumes:
-                  - name: host-docker-sock
-                    hostPath:
-                      path: /var/run/docker.sock
-                  - name: azure-fileshare
-                    azureFile:
-                      secretName: azure-fileshare-secret
-                      shareName: deployment-kubeconfig
-                      readOnly: true
+              <JENKINS_AGENT_TEMPLATE_YAML>
 
 credentials:
   system:

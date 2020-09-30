@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   labels:
     jenkins: agent
+  name: jenkins-agent
   namespace: {{ .Values.namespace }}
 spec:
   imagePullSecrets:
@@ -21,7 +22,7 @@ spec:
         - mountPath: /var/run/docker.sock
           name: host-docker-sock
         - mountPath: ~/.kube
-          name: azure-fileshare
+          name: cloud-fileshare
       resources:
         requests:
           cpu: 500m
@@ -33,8 +34,13 @@ spec:
     - name: host-docker-sock
       hostPath:
         path: /var/run/docker.sock
-    - name: azure-fileshare
+    - name: cloud-fileshare
+    {{- if eq .Values.cloudProvider "aws" }}
+      persistentVolumeClaim:
+        claimName: deployment-kubeconfig-pvc
+    {{- else if eq .Values.cloudProvider "azure" }}
       azureFile:
         secretName: azure-fileshare-secret
         shareName: deployment-kubeconfig
         readOnly: true
+    {{- end -}}

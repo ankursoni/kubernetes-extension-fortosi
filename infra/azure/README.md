@@ -1,5 +1,5 @@
 # Install terraform
-```
+``` SH
 {
   wget https://releases.hashicorp.com/terraform/0.13.3/terraform_0.13.3_linux_amd64.zip
   unzip terraform_0.13.3_linux_amd64.zip
@@ -9,14 +9,14 @@
 ```
 
 # Verify terraform installation
-```
+``` SH
 terraform -v
 ```
 
 # Provision infrastructure on cloud
 
 ## - Set the values for the variables by writing to the var file - azure-secret.tfvars
-```
+``` SH
 az login
 az account list
 # note the id as <SUBSCRIPTION_ID> and tenantId as <TENANT_ID> from the output of previous command
@@ -99,8 +99,8 @@ nano azure-secret.tfvars
 ```
 
 ## - Deploy infrastructure
-```
-cd infra
+``` SH
+cd infra/azure or infra/aws
 
 # initialise terraform providers
 terraform init
@@ -115,13 +115,13 @@ nano azure-secret.tfvars
 ```
 
 # Browse the AKS cluster
-```
+``` SH
 az aks get-credentials -n <PREFIX>-<ENVIRONMENT>-aks01 -g <PREFIX>-<ENVIRONMENT>-rg01
 az aks browse -n <PREFIX>-<ENVIRONMENT>-aks01 -g <PREFIX>-<ENVIRONMENT>-rg01
 ```
 
 # Destroy environment
-```
-cd infra
+``` SH
+cd infra/azure or infra/aws
 terraform destroy -var-file=azure-secret.tfvars
 ```

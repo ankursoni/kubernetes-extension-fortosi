@@ -8,17 +8,17 @@ This kubernetes extension has the following deployment topology in AWS:
 
 ![topology](docs/images/aws-topology.png)
 
-* [Elastic Kubernetes Service](https://aws.amazon.com/eks/) for running Jenkins.
+* [Elastic Kubernetes Service (EKS) with Fargate](https://aws.amazon.com/eks/) for running Jenkins.
 * Storage
-  * [Elastic File Share](https://aws.amazon.com/efs/) for storing and retrieving kubeconfig files in Azure file share.
-  * [Elastic Block Store](https://aws.amazon.com/ebs/) for storing Jenkins home directory.
+  * [Elastic File Share (EFS)](https://aws.amazon.com/efs/) for storing Jenkins home directory and storing and retrieving kubeconfig files in Azure file share.
+> NOTE: EKS with Fargate is available only in selected regions: https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/
 
 
 This kubernetes extension has the following deployment topology in Azure:
 
 ![topology](docs/images/azure-topology.png)
 
-* [Azure Kubernetes Service](https://docs.microsoft.com/en-us/azure/aks/) for running Jenkins.
+* [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/en-us/azure/aks/) for running Jenkins.
 * Storage
   * [Storage Account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview) for storing and retrieving kubeconfig files in Azure file share.
   * [Managed Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/managed-disks-overview) for storing Jenkins home directory.
@@ -76,6 +76,13 @@ snap install kubectl --classic
 ### - Install helm
 ``` SH
 curl -fsSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | sudo bash -
+```
+
+### - Install yq
+``` SH
+sudo add-apt-repository ppa:rmescandon/yq
+sudo apt update
+sudo apt install yq -y
 ```
 
 ### - Verify helm installation
@@ -136,6 +143,8 @@ AKS_RG="fortio-demo-rg01"
 
 # execute jenkins installation
 kubectl fortio auto-setup-vars-secret
+
+# access jenkins portal by browsing http://localhost:8090
 ```
 
 ---

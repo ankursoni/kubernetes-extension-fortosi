@@ -1,3 +1,18 @@
+{{- if eq .Values.cloudProvider "aws" }}
+apiVersion: storage.k8s.io/v1beta1
+kind: CSIDriver
+metadata:
+  name: efs.csi.aws.com
+spec:
+  attachRequired: false
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: efs-sc
+provisioner: efs.csi.aws.com
+---
+{{- end }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -6,13 +21,21 @@ spec:
   capacity:
     storage: 16Gi
   volumeMode: Filesystem
-  storageClassName: ""
   accessModes:
     - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+{{- if eq .Values.cloudProvider "aws" }}
+  storageClassName: efs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: {{ .Values.efs.jenkinsMasterEfsId }}
+{{- else if eq .Values.cloudProvider "azure" }}
+  storageClassName: ""
   azureDisk:
     kind: Managed
     diskName: {{ .Values.managedDisk.name }}
     diskURI: {{ .Values.managedDisk.uri }}
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -27,3 +50,35 @@ spec:
       storage: 16Gi
   volumeMode: Filesystem
   storageClassName: ""
+{{- if eq .Values.cloudProvider "aws" }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: deployment-kubeconfig-pv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: efs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: {{ .Values.efs.deploymentKubeconfigEfsId }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: deployment-kubeconfig-pvc
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  storageClassName: efs-sc
+{{- end }}

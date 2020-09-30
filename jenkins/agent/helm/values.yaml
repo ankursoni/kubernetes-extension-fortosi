@@ -5,3 +5,4 @@ image:
   name: <JENKINS_IMAGE_NAME>
   tag: jenkins-agent
   pullPolicy: Always
+cloudProvider: <CLOUD_PROVIDER>
