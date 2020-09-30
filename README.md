@@ -122,13 +122,14 @@ cp auto-setup-vars auto-setup-vars-secret
 # - INIT_REPO is the git repository in your github org for the initial jenkins job creation pipeline
 # - MANAGED_DISK_RG is the resource group of managed disk of a minimum 16GB capacity
 # - AKS_RG is the resource group of azure kubernetes service
+# - CLOUD_PROVIDER is the either aws or azure
 FORTIO_GIT_CLONE_PATH="/home/ankur/repo/kubernetes-extension-fortio"
 CONTAINER_REGISTRY_URL="docker.io"
 CONTAINER_REPOSITORY_NAME="ankursoni"
 JENKINS_IMAGE_NAME="fortio"
 GITHUB_USER_NAME="ankursoni"
 GITHUB_USER_PAT="<removed as secret>"
-GITHUB_ORG="BulldozerLabs"
+GITHUB_ORG="ankursoni"
 INIT_REPO="kubernetes-extension-fortio"
 ENABLE_LOCAL_DOCKER=false
 CICD_NAMESPACE="jenkins"
@@ -140,6 +141,7 @@ MANAGED_DISK_NAME="fortio-demo-md01"
 SUBSCRIPTION_ID="794a7d2a-565a-4ebd-8dd9-0439763e6b55"
 AKS_NAME="fortio-demo-aks01"
 AKS_RG="fortio-demo-rg01"
+CLOUD_PROVIDER="azure"
 
 # execute jenkins installation
 kubectl fortio auto-setup-vars-secret
