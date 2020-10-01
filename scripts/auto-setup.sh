@@ -35,22 +35,26 @@ docker push $CONTAINER_REGISTRY_URL/$CONTAINER_REPOSITORY_NAME/$JENKINS_IMAGE_NA
 
 
 echo -e "\nSetting kubectl context"
-sub=$((az account list -o table || echo '') | grep $SUBSCRIPTION_ID)
-if [ -z "$sub" ]
-then az login
+if [ $CLOUD_PROVIDER = 'aws' ]
+then
+  aws eks --region $AWS_REGION_CODE update-kubeconfig --name $AWS_EKS_NAME
+elif [ $CLOUD_PROVIDER = 'azure' ]
+  sub=$((az account list -o table || echo '') | grep $AZURE_SUBSCRIPTION_ID)
+  if [ -z "$sub" ]
+  then az login
+  fi
+  az account set --subscription $AZURE_SUBSCRIPTION_ID
+  storage_key=$(az storage account keys list --account-name ${AZURE_STORAGE_ACCOUNT_NAME} --query "[0]".{Key:value} -o tsv)
+
+  rm -f $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret
+  az aks get-credentials -n $AKS_NAME -g $AKS_RG \
+    --overwrite-existing -f $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret
+  cp $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret config
+  az storage file upload --subscription $AZURE_SUBSCRIPTION_ID \
+    --account-name $AZURE_STORAGE_ACCOUNT_NAME --account-key $storage_key \
+    --share-name deployment-kubeconfig --source ./config
+  rm -f config
 fi
-az account set --subscription $SUBSCRIPTION_ID
-storage_key=$(az storage account keys list --account-name ${STORAGE_ACCOUNT_NAME} --query "[0]".{Key:value} -o tsv)
-
-rm -f $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret
-az aks get-credentials -n $AKS_NAME -g $AKS_RG \
-  --overwrite-existing -f $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret
-cp $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret config
-az storage file upload --subscription $SUBSCRIPTION_ID \
-  --account-name $STORAGE_ACCOUNT_NAME --account-key $storage_key \
-  --share-name deployment-kubeconfig --source ./config
-rm -f config
-
 
 cp ~/.kube/config ~/.kube/config.bak
 export KUBECONFIG=$FORTIO_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret:~/.kube/config.bak
@@ -104,14 +108,16 @@ docker_config=$(echo $docker_config | sed "s|<CONTAINER_REGISTRY_AUTH>|$(echo ${
 
 sed -i "s|<CLOUD_PROVIDER>|$CLOUD_PROVIDER|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<STORAGE_ACCOUNT_KEY>|$storage_key|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
-sed -i "s|<SUBSCRIPTION_ID>|${SUBSCRIPTION_ID}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
+sed -i "s|<AZURE_SUBSCRIPTION_ID>|${AZURE_SUBSCRIPTION_ID}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<DOCKER_CONFIG>|${docker_config}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<CONTAINER_REGISTRY_URL>|${CONTAINER_REGISTRY_URL}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<CONTAINER_REPOSITORY_NAME>|${CONTAINER_REPOSITORY_NAME}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<JENKINS_IMAGE_NAME>|${JENKINS_IMAGE_NAME}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
-sed -i "s|<STORAGE_ACCOUNT_NAME>|${STORAGE_ACCOUNT_NAME}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
-sed -i "s|<MANAGED_DISK_RG>|${MANAGED_DISK_RG}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
-sed -i "s|<MANAGED_DISK_NAME>|${MANAGED_DISK_NAME}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
+sed -i "s|<JENKINS_MASTER_EFS_ID>|${JENKINS_MASTER_EFS_ID}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
+sed -i "s|<DEPLOYMENT_KUBECONFIG_EFS_ID>|${DEPLOYMENT_KUBECONFIG_EFS_ID}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
+sed -i "s|<AZURE_STORAGE_ACCOUNT_NAME>|${AZURE_STORAGE_ACCOUNT_NAME}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
+sed -i "s|<AZURE_MANAGED_DISK_RG>|${AZURE_MANAGED_DISK_RG}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
+sed -i "s|<AZURE_MANAGED_DISK_NAME>|${AZURE_MANAGED_DISK_NAME}|g" $FORTIO_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 
 echo -e "\nDeploying jenkins master helm chart"
 release=$(helm list -q -f jenkins-master)

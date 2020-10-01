@@ -24,7 +24,7 @@ This kubernetes extension has the following deployment topology in Azure:
   * [Managed Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/managed-disks-overview) for storing Jenkins home directory.
 
 
-## Install basic, docker, kubectl and helm pre-requisites
+## Install basic, docker, kubectl, helm and cloud pre-requisites
 ---
 ### - Update and upgrade apt packages:
 ``` SH
@@ -41,6 +41,13 @@ sudo apt-get install -y \
      lsb-release \
      gnupg-agent gnupg2 \
      software-properties-common
+```
+
+### - Install yq
+``` SH
+sudo add-apt-repository ppa:rmescandon/yq
+sudo apt update
+sudo apt install yq -y
 ```
 
 ### - Install docker ce for Ubuntu 18.04:
@@ -78,23 +85,32 @@ snap install kubectl --classic
 curl -fsSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | sudo bash -
 ```
 
-### - Install yq
-``` SH
-sudo add-apt-repository ppa:rmescandon/yq
-sudo apt update
-sudo apt install yq -y
-```
-
 ### - Verify helm installation
 ``` SH
 helm version
 ```
 
 ---
+### - Install aws cli
+``` SH
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+rm -rf ./aws awscliv2.zip
+```
+
+Or,
+
+### - Install azure cli
+``` SH
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+```
+---
 
 ## Automatic installation of jenkins on kubernetes
-* Option 1: Deploy azure kubernetes cluster (aks) and related resources by following the instructions in [infra/azure/README.md](infra/azure/README.md)
-* Option 2: Or, bring your own kubernetes cluster along with a storage account and managed disk on which the aks identity has contributor permissions on them.
+* Option 1: Deploy cloud kubernetes cluster and related resources by following the instructions in [infra/aws/README.md](infra/aws/README.md) or [infra/azure/README.md](infra/azure/README.md)
+* Option 2: Or, bring your own elastic kubernetes service cluster along with two elastic file systems.
+* Option 3: Or, bring your own azure kubernetes service cluster along with a storage account and managed disk on which the aks identity has contributor permissions on them.
 * Thereafter, follow these instructions:
 ``` SH
 # change to the directory where you want fortio extension to be installed like, user's home (~)
@@ -120,8 +136,8 @@ cp auto-setup-vars auto-setup-vars-secret
 # - FORTIO_GIT_CLONE_PATH is the local path for this cloned git repository
 # - GITHUB_ORG is your github org that contains all your projects for ci/cd requirement
 # - INIT_REPO is the git repository in your github org for the initial jenkins job creation pipeline
-# - MANAGED_DISK_RG is the resource group of managed disk of a minimum 16GB capacity
-# - AKS_RG is the resource group of azure kubernetes service
+# - AZURE_MANAGED_DISK_RG is the azure resource group of managed disk of a minimum 16GB capacity
+# - AZURE_AKS_RG is the azure resource group of azure kubernetes service
 # - CLOUD_PROVIDER is the either aws or azure
 FORTIO_GIT_CLONE_PATH="/home/ankur/repo/kubernetes-extension-fortio"
 CONTAINER_REGISTRY_URL="docker.io"
@@ -135,12 +151,16 @@ ENABLE_LOCAL_DOCKER=false
 CICD_NAMESPACE="jenkins"
 CONTAINER_REGISTRY_USER_NAME="ankursoni"
 CONTAINER_REGISTRY_USER_PASSWORD="<removed as secret>"
-STORAGE_ACCOUNT_NAME="fortiodemosa01"
-MANAGED_DISK_RG="fortio-demo-rg01"
-MANAGED_DISK_NAME="fortio-demo-md01"
-SUBSCRIPTION_ID="794a7d2a-565a-4ebd-8dd9-0439763e6b55"
-AKS_NAME="fortio-demo-aks01"
-AKS_RG="fortio-demo-rg01"
+AWS_REGION_CODE="ap-southeast-2"
+AWS_EKS_NAME="fortio-demo-eks01"
+AWS_JENKINS_MASTER_EFS_ID="<removed as secret>"
+AWS_DEPLOYMENT_KUBECONFIG_EFS_ID="<removed as secret>"
+AZURE_STORAGE_ACCOUNT_NAME="fortiodemosa01"
+AZURE_MANAGED_DISK_RG="fortio-demo-rg01"
+AZURE_MANAGED_DISK_NAME="fortio-demo-md01"
+AZURE_SUBSCRIPTION_ID="794a7d2a-565a-4ebd-8dd9-0439763e6b55"
+AZURE_AKS_NAME="fortio-demo-aks01"
+AZURE_AKS_RG="fortio-demo-rg01"
 CLOUD_PROVIDER="azure"
 
 # execute jenkins installation

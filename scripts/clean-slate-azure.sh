@@ -1,6 +1,6 @@
 #!/bin/bash
 # locally executed script assumes the current/execution directory:
-# "cd infra"
+# "cd infra/azure"
 # $1 - enable terraform state cleanup
 
 # stop on error
@@ -9,7 +9,7 @@ set -e
 if [ -s terraform.tfstate ]
 then
   echo -e "\nTerraform destroy"
-  terraform destroy -auto-approve -var-file=azurerm-secret.tfvars
+  terraform destroy -auto-approve -var-file=azure-secret.tfvars
 fi
 
 if [ ! -z "$1" ] && ( $1 )

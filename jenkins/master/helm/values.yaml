@@ -8,11 +8,11 @@ image:
   pullPolicy: Always
 cloudProvider: <CLOUD_PROVIDER>
 efs:
-  jenkinsMasterEfsId: <JENKINS_MASTER_EFS_ID>
-  deploymentKubeconfigEfsId: <DEPLOYMENT_KUBECONFIG_EFS_ID>
+  jenkinsMasterEfsId: <AWS_JENKINS_MASTER_EFS_ID>
+  deploymentKubeconfigEfsId: <AWS_DEPLOYMENT_KUBECONFIG_EFS_ID>
 storageAccount:
-  name: <STORAGE_ACCOUNT_NAME>
-  key: <STORAGE_ACCOUNT_KEY>
+  name: <AZURE_STORAGE_ACCOUNT_NAME>
+  key: <AZURE_STORAGE_ACCOUNT_KEY>
 managedDisk:
-  name: <MANAGED_DISK_NAME>
-  uri: /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<MANAGED_DISK_RG>/providers/Microsoft.Compute/disks/<MANAGED_DISK_NAME>
+  name: <AZURE_MANAGED_DISK_NAME>
+  uri: /subscriptions/<AZURE_SUBSCRIPTION_ID>/resourceGroups/<AZURE_MANAGED_DISK_RG>/providers/Microsoft.Compute/disks/<AZURE_MANAGED_DISK_NAME>
