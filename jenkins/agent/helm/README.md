@@ -19,7 +19,7 @@ sed -i 's|<CONTAINER_REGISTRY_URL>|PLACEHOLDER|g' values-secret.yaml
 sed -i 's|<CONTAINER_REPOSITORY_NAME>|PLACEHOLDER|g' values-secret.yaml
 
 # substitute the value for <JENKINS_IMAGE_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortio
+# PLACEHOLDER e.g. fortosi
 # hardcoded image tags like jenkins-master and jenkins-agent will distinguish between the 2 image types
 sed -i 's|<JENKINS_IMAGE_NAME>|PLACEHOLDER|g' values-secret.yaml
 
@@ -31,7 +31,7 @@ namespace: jenkins
 image:
   registry: docker.io
   repository: ankursoni
-  name: fortio
+  name: fortosi
   tag: jenkins-agent
   pullPolicy: Always
 ```

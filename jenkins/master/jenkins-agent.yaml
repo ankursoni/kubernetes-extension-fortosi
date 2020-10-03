@@ -9,7 +9,7 @@
                   - name: container-registry-secret
                 containers:
                   - name: jnlp
-                    image: docker.io/ankursoni/fortio:jenkins-agent
+                    image: docker.io/ankursoni/fortosi:jenkins-agent
                     imagePullPolicy: Always
                     workingDir: /home/jenkins
                     env:

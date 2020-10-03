@@ -35,7 +35,7 @@ sed -i 's|<CONTAINER_REGISTRY_URL>|PLACEHOLDER|g' values-secret.yaml
 sed -i 's|<CONTAINER_REPOSITORY_NAME>|PLACEHOLDER|g' values-secret.yaml
 
 # substitute the value for <JENKINS_IMAGE_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortio
+# PLACEHOLDER e.g. fortosi
 # hardcoded image tags like jenkins-master and jenkins-agent will distinguish between the 2 image types
 sed -i 's|<JENKINS_IMAGE_NAME>|PLACEHOLDER|g' values-secret.yaml
 
@@ -57,7 +57,7 @@ az account list -o table
 sed -i 's|<AZURE_SUBSCRIPTION_ID>|PLACEHOLDER|g' values-secret.yaml
 
 # substitute the value for <AZURE_STORAGE_ACCOUNT_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortiodemosa01
+# PLACEHOLDER e.g. fortosidemosa01
 sed -i 's|<AZURE_STORAGE_ACCOUNT_NAME>|PLACEHOLDER|g' values-secret.yaml
 
 # determine the storage account key by substituting <AZURE_STORAGE_ACCOUNT_NAME> in the following command:
@@ -67,11 +67,11 @@ storage_key=$(az storage account keys list --account-name <AZURE_STORAGE_ACCOUNT
 sed -i "s|<AZURE_STORAGE_ACCOUNT_KEY>|$storage_key|g" values-secret.yaml
 
 # substitute the value for <AZURE_MANAGED_DISK_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortio-demo-md01
+# PLACEHOLDER e.g. fortosi-demo-md01
 sed -i 's|<AZURE_MANAGED_DISK_NAME>|PLACEHOLDER|g' values-secret.yaml
 
 # substitute the value for <AZURE_MANAGED_DISK_RG> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortio-demo-rg01
+# PLACEHOLDER e.g. fortosi-demo-rg01
 sed -i 's|<AZURE_MANAGED_DISK_RG>|PLACEHOLDER|g' values-secret.yaml
 
 # verify the values-secret.yaml file by displaying its content
@@ -83,18 +83,18 @@ dockerConfig: '<removed as secret>'
 image:
   registry: docker.io
   repository: ankursoni
-  name: fortio
+  name: fortosi
   tag: jenkins-master
   pullPolicy: Always
 efs:
   jenkinsMasterEfsId: <removed as secret>
   deploymentKubeconfigEfsId: <removed as secret>
 storageAccount:
-  name: fortiodemosa01
+  name: fortosidemosa01
   key: <removed as secret>
 managedDisk:
-  name: fortio-demo-md01
-  uri: /subscriptions/794a7d2a-565a-4ebd-8dd9-0439763e6b55/resourceGroups/fortio-demo-rg01/providers/Microsoft.Compute/disks/fortio-demo-md01
+  name: fortosi-demo-md01
+  uri: /subscriptions/794a7d2a-565a-4ebd-8dd9-0439763e6b55/resourceGroups/fortosi-demo-rg01/providers/Microsoft.Compute/disks/fortosi-demo-md01
 ```
 
 # Upload the kubeconfig file to azure file share for in place deployment of applications

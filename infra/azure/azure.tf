@@ -11,7 +11,7 @@ variable "client_secret" {
   default = ""
 }
 variable "prefix" {
-  default = "fortio"
+  default = "fortosi"
 }
 variable "environment" {
   default = ""

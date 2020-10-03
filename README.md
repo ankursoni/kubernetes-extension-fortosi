@@ -1,4 +1,4 @@
-# fortio
+# fortosi
 CI/CD extension for kubernetes.
 
 
@@ -113,58 +113,58 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 * Option 3: Or, bring your own azure kubernetes service cluster along with a storage account and managed disk on which the aks identity has contributor permissions on them.
 * Thereafter, follow these instructions:
 ``` SH
-# change to the directory where you want fortio extension to be installed like, user's home (~)
+# change to the directory where you want fortosi extension to be installed like, user's home (~)
 cd ~
 
 # preset sudo password in terminal session
 sudo echo hi
 
-# install the kubectl extension - fortio
-# note: it will create a git clone directory - kubernetes-extension-fortio
-curl https://raw.githubusercontent.com/ankursoni/kubernetes-extension-installers/master/fortio-installer.sh | sudo bash
+# install the kubectl extension - fortosi
+# note: it will create a git clone directory - kubernetes-extension-fortosi
+curl https://raw.githubusercontent.com/ankursoni/kubernetes-extension-installers/master/fortosi-installer.sh | sudo bash
 
 # change the ownership of the git clone directory
-sudo chown -R $USER: kubernetes-extension-fortio
+sudo chown -R $USER: kubernetes-extension-fortosi
 
-# change directory to kubernetes-extension-fortio
-cd kubernetes-extension-fortio
+# change directory to kubernetes-extension-fortosi
+cd kubernetes-extension-fortosi
 
 # prepare the auto setup script secret variables file - auto-setup-vars-secret
 cp auto-setup-vars auto-setup-vars-secret
 
 # update the secret variables file like the following, where,
-# - FORTIO_GIT_CLONE_PATH is the local path for this cloned git repository
+# - FORTOSI_GIT_CLONE_PATH is the local path for this cloned git repository
 # - GITHUB_ORG is your github org that contains all your projects for ci/cd requirement
 # - INIT_REPO is the git repository in your github org for the initial jenkins job creation pipeline
 # - AZURE_MANAGED_DISK_RG is the azure resource group of managed disk of a minimum 16GB capacity
 # - AZURE_AKS_RG is the azure resource group of azure kubernetes service
 # - CLOUD_PROVIDER is the either aws or azure
-FORTIO_GIT_CLONE_PATH="/home/ankur/repo/kubernetes-extension-fortio"
+FORTOSI_GIT_CLONE_PATH="/home/ankur/repo/kubernetes-extension-fortosi"
 CONTAINER_REGISTRY_URL="docker.io"
 CONTAINER_REPOSITORY_NAME="ankursoni"
-JENKINS_IMAGE_NAME="fortio"
+JENKINS_IMAGE_NAME="fortosi"
 GITHUB_USER_NAME="ankursoni"
 GITHUB_USER_PAT="<removed as secret>"
 GITHUB_ORG="ankursoni"
-INIT_REPO="kubernetes-extension-fortio"
+INIT_REPO="kubernetes-extension-fortosi"
 ENABLE_LOCAL_DOCKER=false
 CICD_NAMESPACE="jenkins"
 CONTAINER_REGISTRY_USER_NAME="ankursoni"
 CONTAINER_REGISTRY_USER_PASSWORD="<removed as secret>"
 AWS_REGION_CODE="ap-southeast-2"
-AWS_EKS_NAME="fortio-demo-eks01"
+AWS_EKS_NAME="fortosi-demo-eks01"
 AWS_JENKINS_MASTER_EFS_ID="<removed as secret>"
 AWS_DEPLOYMENT_KUBECONFIG_EFS_ID="<removed as secret>"
-AZURE_STORAGE_ACCOUNT_NAME="fortiodemosa01"
-AZURE_MANAGED_DISK_RG="fortio-demo-rg01"
-AZURE_MANAGED_DISK_NAME="fortio-demo-md01"
+AZURE_STORAGE_ACCOUNT_NAME="fortosidemosa01"
+AZURE_MANAGED_DISK_RG="fortosi-demo-rg01"
+AZURE_MANAGED_DISK_NAME="fortosi-demo-md01"
 AZURE_SUBSCRIPTION_ID="794a7d2a-565a-4ebd-8dd9-0439763e6b55"
-AZURE_AKS_NAME="fortio-demo-aks01"
-AZURE_AKS_RG="fortio-demo-rg01"
+AZURE_AKS_NAME="fortosi-demo-aks01"
+AZURE_AKS_RG="fortosi-demo-rg01"
 CLOUD_PROVIDER="azure"
 
 # execute jenkins installation
-kubectl fortio auto-setup-vars-secret
+kubectl fortosi auto-setup-vars-secret
 
 # access jenkins portal by browsing http://localhost:8090
 ```

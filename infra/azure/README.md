@@ -13,7 +13,7 @@
 terraform -v
 ```
 
-# Provision infrastructure on cloud
+# Provision infrastructure on azure
 
 ## - Set the values for the variables by writing to the var file - azure-secret.tfvars
 ``` SH
@@ -31,7 +31,7 @@ az role assignment create --role "User Access Administrator" --assignee-object-i
 
 
 # copy the template variable file
-cd infra
+cd infra/azure
 cp azure.tfvars azure-secret.tfvars
 
 
@@ -58,7 +58,7 @@ sed -i 's|<CLIENT_SECRET>|PLACEHOLDER|g' azure-secret.tfvars
 # for e.g., aks cluster name: <PREFIX>-<ENVIRONMENT>-aks01
 
 # substitute the value for <PREFIX> by replacing PLACEHOLDER in the following command:
-# PLACEHOLDER e.g. "fortio" or "cicd" etc.
+# PLACEHOLDER e.g. "fortosi" or "cicd" etc.
 sed -i 's|<PREFIX>|PLACEHOLDER|g' azure-secret.tfvars
 
 # substitute the value for <ENVIRONMENT> by replacing PLACEHOLDER in the command
@@ -88,7 +88,7 @@ subscription_id="794a7d2a-565a-4ebd-8dd9-0439763e6b55"
 tenant_id="<removed as secret>" 
 client_id="<removed as secret>"
 client_secret="<removed as secret>"
-prefix="fortio"
+prefix="fortosi"
 environment="demo"
 location="australiaeast"
 vm_size="Standard_B2s"
@@ -100,7 +100,7 @@ nano azure-secret.tfvars
 
 ## - Deploy infrastructure
 ``` SH
-cd infra/azure or infra/aws
+cd infra/azure
 
 # initialise terraform providers
 terraform init
