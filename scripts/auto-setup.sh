@@ -39,6 +39,7 @@ if [ $CLOUD_PROVIDER = 'aws' ]
 then
   aws eks --region $AWS_REGION_CODE update-kubeconfig --name $AWS_EKS_NAME
 elif [ $CLOUD_PROVIDER = 'azure' ]
+then
   sub=$((az account list -o table || echo '') | grep $AZURE_SUBSCRIPTION_ID)
   if [ -z "$sub" ]
   then az login
@@ -46,18 +47,13 @@ elif [ $CLOUD_PROVIDER = 'azure' ]
   az account set --subscription $AZURE_SUBSCRIPTION_ID
   storage_key=$(az storage account keys list --account-name ${AZURE_STORAGE_ACCOUNT_NAME} --query "[0]".{Key:value} -o tsv)
 
-  rm -f $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret
-  az aks get-credentials -n $AKS_NAME -g $AKS_RG \
-    --overwrite-existing -f $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret
-  cp $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret config
-  az storage file upload --subscription $AZURE_SUBSCRIPTION_ID \
-    --account-name $AZURE_STORAGE_ACCOUNT_NAME --account-key $storage_key \
-    --share-name deployment-kubeconfig --source ./config
-  rm -f config
+  rm -f $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
+  az aks get-credentials -n $AZURE_AKS_NAME -g $AZURE_AKS_RG \
+    --overwrite-existing -f $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
 fi
 
 cp ~/.kube/config ~/.kube/config.bak
-export KUBECONFIG=$FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/kubeconfig-secret:~/.kube/config.bak
+export KUBECONFIG=$FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret:~/.kube/config.bak
 kubectl config view --flatten > ~/.kube/config
 rm -f ~/.kube/config.bak
 

@@ -13,6 +13,7 @@ COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 COPY jenkins.yaml /usr/share/jenkins/ref/jenkins.yaml
 COPY jenkins-agent.yaml /jenkins-agent.yaml
 COPY jenkins-vars-secret /jenkins-vars-secret
+# COPY kubeconfig-secret /kubeconfig-secret
 RUN . /jenkins-vars-secret && \
     sed -i "s|<GITHUB_USER_NAME>|${GITHUB_USER_NAME}|g" /usr/share/jenkins/ref/jenkins.yaml && \
     sed -i "s|<GITHUB_USER_PAT>|${GITHUB_USER_PAT}|g" /usr/share/jenkins/ref/jenkins.yaml && \

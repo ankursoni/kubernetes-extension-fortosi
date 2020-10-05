@@ -21,8 +21,6 @@ spec:
       volumeMounts:
         - mountPath: /var/run/docker.sock
           name: host-docker-sock
-        - mountPath: ~/.kube
-          name: cloud-fileshare
       resources:
         requests:
           cpu: 500m
@@ -34,13 +32,3 @@ spec:
     - name: host-docker-sock
       hostPath:
         path: /var/run/docker.sock
-    - name: cloud-fileshare
-    {{- if eq .Values.cloudProvider "aws" }}
-      persistentVolumeClaim:
-        claimName: deployment-kubeconfig-pvc
-    {{- else if eq .Values.cloudProvider "azure" }}
-      azureFile:
-        secretName: azure-fileshare-secret
-        shareName: deployment-kubeconfig
-        readOnly: true
-    {{- end -}}

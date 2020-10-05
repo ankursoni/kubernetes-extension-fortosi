@@ -6,10 +6,8 @@
   sudo mv terraform /usr/local/bin/
   rm terraform_0.13.3_linux_amd64.zip
 }
-```
 
-# Verify terraform installation
-``` SH
+# verify
 terraform -v
 ```
 

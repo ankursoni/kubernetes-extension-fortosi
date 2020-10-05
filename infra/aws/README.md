@@ -6,10 +6,8 @@
   sudo mv terraform /usr/local/bin/
   rm terraform_0.13.3_linux_amd64.zip
 }
-```
 
-# Verify terraform installation
-``` SH
+# verify
 terraform -v
 ```
 
@@ -67,23 +65,33 @@ terraform init
 
 # execute infrastructure provisioning command
 terraform apply -var-file=aws-secret.tfvars
+
+# get kubectl credentials
+aws eks --region <REGION> update-kubeconfig --name <PREFIX>-<ENVIRONMENT>-eks01
+
+# patch coredns to use fargate
+kubectl patch deployment coredns -n kube-system --type json \
+-p='[{"op": "remove", "path": "/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
 ```
 
 # Browse the EKS cluster
 ``` SH
-aws eks --region <REGION> update-kubeconfig --name <PREFIX>-<ENVIRONMENT>-eks01
-
-# install kube-dashboard
-
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
 
+# wait for deployment to be READY 1/1
 kubectl get deployment metrics-server -n kube-system
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
 
 kubectl apply -f eks-admin-service-account.yaml
 
+# copy the token from the output of the following command
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep eks-admin | awk '{print $1}')
+
 kubectl proxy
+
+# browse the kubernetes dashboard url on browser and login using the token in previous step
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#!/login
 ```
 
 # Destroy environment

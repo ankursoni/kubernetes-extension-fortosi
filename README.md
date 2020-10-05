@@ -11,7 +11,7 @@ This kubernetes extension has the following deployment topology in AWS:
 * [Elastic Kubernetes Service (EKS) with Fargate](https://aws.amazon.com/eks/) for running Jenkins.
 * Storage
   * [Elastic File Share (EFS)](https://aws.amazon.com/efs/) for storing Jenkins home directory and storing and retrieving kubeconfig files in Azure file share.
-> NOTE: EKS with Fargate is available only in selected regions: https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/
+> NOTE: EKS with Fargate is available only in selected regions: https://docs.aws.amazon.com/eks/latest/userguide/fargate.html
 
 
 This kubernetes extension has the following deployment topology in Azure:
@@ -24,7 +24,7 @@ This kubernetes extension has the following deployment topology in Azure:
   * [Managed Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/managed-disks-overview) for storing Jenkins home directory.
 
 
-## Install basic, docker, kubectl, helm and cloud pre-requisites
+## Install basic, docker, kubectl, helm and cloud pre-requisites on Windows Subsystem for Linux (WSL2) or Ubuntu
 ---
 ### - Update and upgrade apt packages:
 ``` SH
@@ -43,14 +43,14 @@ sudo apt-get install -y \
      software-properties-common
 ```
 
-### - Install yq
+### - Install yq:
 ``` SH
 sudo add-apt-repository ppa:rmescandon/yq
 sudo apt update
 sudo apt install yq -y
 ```
 
-### - Install docker ce for Ubuntu 18.04:
+### - Install docker ce:
 ``` SH
 curl -fsSL "https://download.docker.com/linux/$(lsb_release -is | tr -td '\n' | tr [:upper:] [:lower:])/gpg" | sudo apt-key add -
 
@@ -61,12 +61,7 @@ sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 ```
 
-### - Install docker for Ubuntu 20.04:
-``` SH
-sudo apt-get install docker-compose
-```
-
-### - Install kubectl for Ubuntu 18.04:
+### - Install kubectl:
 ``` SH
 sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
@@ -75,34 +70,36 @@ sudo apt-get update
 sudo apt-get install -y kubectl
 ```
 
-### - Install kubectl for Ubuntu 20.04:
-``` SH
-snap install kubectl --classic
-```
-
-### - Install helm
+### - Install helm:
 ``` SH
 curl -fsSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | sudo bash -
-```
 
-### - Verify helm installation
-``` SH
+# verify
 helm version
 ```
 
 ---
-### - Install aws cli
+### - Install aws tools:
 ``` SH
+# install aws cli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
 rm -rf ./aws awscliv2.zip
+
+# install efs-utils
+sudo apt-get -y install nfs-common git binutils
+git clone https://github.com/aws/efs-utils
+cd efs-utils
+./build-deb.sh
+sudo apt-get -y install ./build/amazon-efs-utils*deb
 ```
 
 Or,
 
-### - Install azure cli
+### - Install azure tools:
 ``` SH
+# install azure cli
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 ---

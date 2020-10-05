@@ -20,8 +20,6 @@
                     volumeMounts:
                       - mountPath: /var/run/docker.sock
                         name: host-docker-sock
-                      - mountPath: ~/.kube
-                        name: cloud-fileshare
                     resources:
                       requests:
                         cpu: 500m
@@ -33,8 +31,3 @@
                   - name: host-docker-sock
                     hostPath:
                       path: /var/run/docker.sock
-                  - name: cloud-fileshare
-                    azureFile:
-                      secretName: azure-fileshare-secret
-                      shareName: deployment-kubeconfig
-                      readOnly: true

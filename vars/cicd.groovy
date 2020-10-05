@@ -52,7 +52,14 @@ def call(String appName) {
                             sh "cd ${SCRIPT_PATH}; ./docker.sh ${APP_NAME} ${IMAGE_TAG}"
                         }
                         else {
-                            sh "cd ${SCRIPT_PATH}; ./kubernetes.sh ${KUBERNETES_NAMESPACE} ${CONTAINER_REGISTRY_URL} ${CONTAINER_REPOSITORY_NAME} ${IMAGE_TAG} ${APP_NAME}"
+                            withCredentials(
+                                bindings: [
+                                    file(credentialsId: "kubeconfig-secret", variable: "kubeconfig-secret")
+                                ]
+                            ) {
+                                sh "mkdir ~/.kube; mv \$kubeconfig-secret ~/.kube/config"
+                                sh "cd ${SCRIPT_PATH}; ./kubernetes.sh ${KUBERNETES_NAMESPACE} ${CONTAINER_REGISTRY_URL} ${CONTAINER_REPOSITORY_NAME} ${IMAGE_TAG} ${APP_NAME}"
+                            }
                         }
                     }
                 }

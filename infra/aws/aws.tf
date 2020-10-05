@@ -61,10 +61,14 @@ resource "aws_eks_cluster" "eks01" {
   version  = "1.17"
 
   vpc_config {
-    subnet_ids = [for s in module.vpc.private_subnets : s]
+    subnet_ids = [
+      module.vpc.private_subnets[0], module.vpc.private_subnets[1],
+      module.vpc.public_subnets[0], module.vpc.public_subnets[1]
+    ]
   }
 
   depends_on = [
+    aws_iam_role.iamr01,
     aws_iam_role_policy_attachment.iamrpa01,
     aws_iam_role_policy_attachment.iamrpa02
   ]
@@ -107,6 +111,12 @@ resource "aws_eks_fargate_profile" "eksfp01" {
   pod_execution_role_arn = aws_iam_role.iamr02.arn
   subnet_ids             = [for s in module.vpc.private_subnets : s ]
 
+  selector {
+    namespace = "kube-system"
+  }
+  selector {
+    namespace = "kubernetes-dashboard"
+  }
   selector {
     namespace = "default"
   }
