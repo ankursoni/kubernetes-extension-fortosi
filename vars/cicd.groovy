@@ -9,7 +9,7 @@ def call(String appName) {
             SCRIPT_PATH="demo-apps/scripts"
             MAIN_BRANCH="master"
             GIT_DESCRIBE=sh(returnStdout: true, script: "echo -n \$(git describe --always)")
-            IMAGE_VERSION=sh(returnStdout: true, script: "[ $GIT_BRANCH = $MAIN_BRANCH ] && echo -n ${GIT_DESCRIBE} || echo -n ${GIT_BRANCH}-${GIT_DESCRIBE}")
+            IMAGE_VERSION=sh(returnStdout: true, script: "[ $GIT_BRANCH = $MAIN_BRANCH ] && echo -n ${GIT_DESCRIBE} || $(echo -n ${GIT_BRANCH}-${GIT_DESCRIBE} | sed -e 's/\//-/g')")
             IMAGE_NAME="${CONTAINER_REGISTRY_URL}/${CONTAINER_REPOSITORY_NAME}/${APP_NAME}"
             IMAGE_TAG="${IMAGE_NAME}:${IMAGE_VERSION}"
             KUBERNETES_NAMESPACE="default"
@@ -52,7 +52,14 @@ def call(String appName) {
                             sh "cd ${SCRIPT_PATH}; ./docker.sh ${APP_NAME} ${IMAGE_TAG}"
                         }
                         else {
-                            sh "cd ${SCRIPT_PATH}; ./kubernetes.sh ${KUBERNETES_NAMESPACE} ${CONTAINER_REGISTRY_URL} ${CONTAINER_REPOSITORY_NAME} ${IMAGE_TAG} ${APP_NAME}"
+                            withCredentials(
+                                bindings: [
+                                    file(credentialsId: "kubeconfig-secret", variable: "kubeconfig-secret")
+                                ]
+                            ) {
+                                sh "mkdir ~/.kube; mv \$kubeconfig-secret ~/.kube/config"
+                                sh "cd ${SCRIPT_PATH}; ./kubernetes.sh ${KUBERNETES_NAMESPACE} ${CONTAINER_REGISTRY_URL} ${CONTAINER_REPOSITORY_NAME} ${IMAGE_TAG} ${APP_NAME}"
+                            }
                         }
                     }
                 }

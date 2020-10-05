@@ -81,4 +81,4 @@ spec:
       storage: 1Gi
   volumeMode: Filesystem
   storageClassName: efs-sc
-{{- end }}
+{{- end -}}

@@ -71,6 +71,12 @@ credentials:
           scope: GLOBAL
           username: "<CONTAINER_REGISTRY_USER_NAME>"
           password: "<CONTAINER_REGISTRY_USER_PASSWORD>"
+      - file:
+          id: "kubeconfig-secret"
+          description: "kubeconfig-secret"
+          scope: GLOBAL
+          fileName: "kubeconfig-secret"
+          secretBytes: "{YWJjZA==}"
 
 jobs:
   - script: >

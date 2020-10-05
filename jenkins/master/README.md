@@ -24,7 +24,7 @@ sed -i 's|<CONTAINER_REGISTRY_URL>|PLACEHOLDER|g' jenkins-vars-secret
 sed -i 's|<CONTAINER_REPOSITORY_NAME>|PLACEHOLDER|g' jenkins-vars-secret
 
 # substitute the value for <JENKINS_IMAGE_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortio
+# PLACEHOLDER e.g. fortosi
 # hardcoded image tags like jenkins-master and jenkins-agent will distinguish between the 2 image types
 sed -i 's|<JENKINS_IMAGE_NAME>|PLACEHOLDER|g' jenkins-vars-secret
 
@@ -47,7 +47,7 @@ sed -i 's|<CICD_NAMESPACE>|PLACEHOLDER|g' jenkins-vars-secret
 sed -i 's|<GITHUB_ORG>|PLACEHOLDER|g' jenkins-vars-secret
 
 # substitute the value for <INIT_REPO> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortio
+# PLACEHOLDER e.g. fortosi
 sed -i 's|<INIT_REPO>|PLACEHOLDER|g' jenkins-vars-secret
 
 # substitute the value for <ENABLE_LOCAL_DOCKER> by replacing PLACEHOLDER in the command
@@ -63,7 +63,7 @@ GITHUB_USER_NAME="ankursoni"
 GITHUB_USER_PAT="<removed as secret>"
 CONTAINER_REGISTRY_URL="docker.io"
 CONTAINER_REPOSITORY_NAME="ankursoni"
-JENKINS_IMAGE_NAME="fortio"
+JENKINS_IMAGE_NAME="fortosi"
 CONTAINER_REGISTRY_USER_NAME="ankursoni"
 CONTAINER_REGISTRY_USER_PASSWORD="<removed as secret>"
 CICD_NAMESPACE="jenkins"
@@ -78,8 +78,8 @@ nano jenkins-vars-secret
 cd jenkins/master
 
 docker build -t <CONTAINER_REGISTRY_URL>/<CONTAINER_REPOSITORY_NAME>/<JENKINS_IMAGE_NAME>:jenkins-master .
-# for e.g., for 'docker.io' as <CONTAINER_REGISTRY_URL>, 'ankursoni' as <CONTAINER_REPOSITORY_NAME> and 'fortio' as <JENKINS_IMAGE_NAME>:
-# docker build -t docker.io/ankursoni/fortio:jenkins-master .
+# for e.g., for 'docker.io' as <CONTAINER_REGISTRY_URL>, 'ankursoni' as <CONTAINER_REPOSITORY_NAME> and 'fortosi' as <JENKINS_IMAGE_NAME>:
+# docker build -t docker.io/ankursoni/fortosi:jenkins-master .
 ```
 
 # Start jenkins master docker locally (it rebuilds image also)
@@ -115,6 +115,6 @@ docker login <CONTAINER_REGISTRY_URL> -u <USERNAME>
 docker login docker.io -u ankursoni
 
 docker push <CONTAINER_REGISTRY_URL>/<CONTAINER_REPOSITORY_NAME>/<JENKINS_IMAGE_NAME>:jenkins-master
-# for e.g., for 'docker.io' as <CONTAINER_REGISTRY_URL>, 'ankursoni' as <CONTAINER_REPOSITORY_NAME> and 'fortio' as <JENKINS_IMAGE_NAME>:
-# docker push docker.io/ankursoni/fortio:jenkins-master
+# for e.g., for 'docker.io' as <CONTAINER_REGISTRY_URL>, 'ankursoni' as <CONTAINER_REPOSITORY_NAME> and 'fortosi' as <JENKINS_IMAGE_NAME>:
+# docker push docker.io/ankursoni/fortosi:jenkins-master
 ```

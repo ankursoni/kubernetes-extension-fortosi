@@ -35,37 +35,44 @@ sed -i 's|<CONTAINER_REGISTRY_URL>|PLACEHOLDER|g' values-secret.yaml
 sed -i 's|<CONTAINER_REPOSITORY_NAME>|PLACEHOLDER|g' values-secret.yaml
 
 # substitute the value for <JENKINS_IMAGE_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortio
+# PLACEHOLDER e.g. fortosi
 # hardcoded image tags like jenkins-master and jenkins-agent will distinguish between the 2 image types
 sed -i 's|<JENKINS_IMAGE_NAME>|PLACEHOLDER|g' values-secret.yaml
 
 
+# substitute the value for <AWS_JENKINS_MASTER_EFS_ID> by replacing PLACEHOLDER in the following command:
+sed -i 's|<AWS_JENKINS_MASTER_EFS_ID>|PLACEHOLDER|g' values-secret.yaml
+
+# substitute the value for <AWS_DEPLOYMENT_KUBECONFIG_EFS_ID> by replacing PLACEHOLDER in the following command:
+sed -i 's|<AWS_DEPLOYMENT_KUBECONFIG_EFS_ID>|PLACEHOLDER|g' values-secret.yaml
+
+Or,
+
 # login to az
 az login
 az account list -o table
-# note the id as <SUBSCRIPTION_ID> from the output of previous command
+# note the id as <AZURE_SUBSCRIPTION_ID> from the output of previous command
 
-# substitute the value for <SUBSCRIPTION_ID> by replacing PLACEHOLDER in the following command:
-sed -i 's|<SUBSCRIPTION_ID>|PLACEHOLDER|g' values-secret.yaml
+# substitute the value for <AZURE_SUBSCRIPTION_ID> by replacing PLACEHOLDER in the following command:
+sed -i 's|<AZURE_SUBSCRIPTION_ID>|PLACEHOLDER|g' values-secret.yaml
 
-# substitute the value for <STORAGE_ACCOUNT_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortiodemosa01
-sed -i 's|<STORAGE_ACCOUNT_NAME>|PLACEHOLDER|g' values-secret.yaml
+# substitute the value for <AZURE_STORAGE_ACCOUNT_NAME> by replacing PLACEHOLDER in the command
+# PLACEHOLDER e.g. fortosidemosa01
+sed -i 's|<AZURE_STORAGE_ACCOUNT_NAME>|PLACEHOLDER|g' values-secret.yaml
 
-# determine the storage account key by substituting <STORAGE_ACCOUNT_NAME> in the following command:
-storage_key=$(az storage account keys list --account-name <STORAGE_ACCOUNT_NAME> --query "[0]".{Key:value} -o tsv)
+# determine the storage account key by substituting <AZURE_STORAGE_ACCOUNT_NAME> in the following command:
+storage_key=$(az storage account keys list --account-name <AZURE_STORAGE_ACCOUNT_NAME> --query "[0]".{Key:value} -o tsv)
 
-# substitute the value for <STORAGE_ACCOUNT_KEY> by running the following command:
-sed -i "s|<STORAGE_ACCOUNT_KEY>|$storage_key|g" values-secret.yaml
+# substitute the value for <AZURE_STORAGE_ACCOUNT_KEY> by running the following command:
+sed -i "s|<AZURE_STORAGE_ACCOUNT_KEY>|$storage_key|g" values-secret.yaml
 
+# substitute the value for <AZURE_MANAGED_DISK_NAME> by replacing PLACEHOLDER in the command
+# PLACEHOLDER e.g. fortosi-demo-md01
+sed -i 's|<AZURE_MANAGED_DISK_NAME>|PLACEHOLDER|g' values-secret.yaml
 
-# substitute the value for <MANAGED_DISK_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortio-demo-md01
-sed -i 's|<MANAGED_DISK_NAME>|PLACEHOLDER|g' values-secret.yaml
-
-# substitute the value for <MANAGED_DISK_RG> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortio-demo-rg01
-sed -i 's|<MANAGED_DISK_RG>|PLACEHOLDER|g' values-secret.yaml
+# substitute the value for <AZURE_MANAGED_DISK_RG> by replacing PLACEHOLDER in the command
+# PLACEHOLDER e.g. fortosi-demo-rg01
+sed -i 's|<AZURE_MANAGED_DISK_RG>|PLACEHOLDER|g' values-secret.yaml
 
 # verify the values-secret.yaml file by displaying its content
 cat values-secret.yaml
@@ -76,15 +83,18 @@ dockerConfig: '<removed as secret>'
 image:
   registry: docker.io
   repository: ankursoni
-  name: fortio
+  name: fortosi
   tag: jenkins-master
   pullPolicy: Always
+efs:
+  jenkinsMasterEfsId: <removed as secret>
+  deploymentKubeconfigEfsId: <removed as secret>
 storageAccount:
-  name: fortiodemosa01
+  name: fortosidemosa01
   key: <removed as secret>
 managedDisk:
-  name: fortio-demo-md01
-  uri: /subscriptions/794a7d2a-565a-4ebd-8dd9-0439763e6b55/resourceGroups/fortio-demo-rg01/providers/Microsoft.Compute/disks/fortio-demo-md01
+  name: fortosi-demo-md01
+  uri: /subscriptions/794a7d2a-565a-4ebd-8dd9-0439763e6b55/resourceGroups/fortosi-demo-rg01/providers/Microsoft.Compute/disks/fortosi-demo-md01
 ```
 
 # Upload the kubeconfig file to azure file share for in place deployment of applications

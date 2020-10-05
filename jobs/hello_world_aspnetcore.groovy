@@ -2,7 +2,7 @@ multibranchPipelineJob("hello-world-aspnetcore") {
     branchSources {
         git {
             id = "hello-world-aspnetcore"
-            remote("https://github.com/ankursoni/kubernetes-extension-fortio.git")
+            remote("https://github.com/ankursoni/kubernetes-extension-fortosi.git")
             credentialsId("github-credentials")
         }
     }

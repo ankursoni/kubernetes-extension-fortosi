@@ -1,5 +1,5 @@
 variable "prefix" {
-  default = "fortio"
+  default = "fortosi"
 }
 variable "environment" {
   default = ""
@@ -22,10 +22,29 @@ terraform {
   }
 }
 
+
 provider "aws" {
   region = var.region
 }
 
+
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name = "${var.prefix}-${var.environment}-vpc01"
+  cidr = "10.0.0.0/16"
+
+  azs             = ["${var.region}a", "${var.region}b"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
+
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
+
+  tags = {
+    "kubernetes.io/cluster/${var.prefix}-${var.environment}-eks01" = "shared"
+  }
+}
 
 resource "aws_efs_file_system" "efs01" {
   creation_token = "${var.prefix}-${var.environment}-efs01"
@@ -36,26 +55,22 @@ resource "aws_efs_file_system" "efs02" {
 }
 
 
-data "aws_vpc" "vpc01" {
-  default = true
-}
-
-data "aws_subnet_ids" "subnetids01" {
-  vpc_id = data.aws_vpc.vpc01.id
-}
-
 resource "aws_eks_cluster" "eks01" {
   name     = "${var.prefix}-${var.environment}-eks01"
   role_arn = aws_iam_role.iamr01.arn
-  version  = "1.17.9"
+  version  = "1.17"
 
   vpc_config {
-    subnet_ids = [for s in data.aws_subnet_ids.subnetids01.ids : s]
+    subnet_ids = [
+      module.vpc.private_subnets[0], module.vpc.private_subnets[1],
+      module.vpc.public_subnets[0], module.vpc.public_subnets[1]
+    ]
   }
 
   depends_on = [
+    aws_iam_role.iamr01,
     aws_iam_role_policy_attachment.iamrpa01,
-    aws_iam_role_policy_attachment.iamrpa02,
+    aws_iam_role_policy_attachment.iamrpa02
   ]
 }
 output "endpoint" {
@@ -94,8 +109,14 @@ resource "aws_eks_fargate_profile" "eksfp01" {
   cluster_name           = aws_eks_cluster.eks01.name
   fargate_profile_name   = "${var.prefix}-${var.environment}-eksfp01"
   pod_execution_role_arn = aws_iam_role.iamr02.arn
-  subnet_ids             = [for s in data.aws_subnet_ids.subnetids01.ids : s]
+  subnet_ids             = [for s in module.vpc.private_subnets : s ]
 
+  selector {
+    namespace = "kube-system"
+  }
+  selector {
+    namespace = "kubernetes-dashboard"
+  }
   selector {
     namespace = "default"
   }
