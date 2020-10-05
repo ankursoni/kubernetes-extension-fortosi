@@ -151,14 +151,12 @@ CONTAINER_REGISTRY_USER_PASSWORD="<removed as secret>"
 AWS_REGION_CODE="ap-southeast-2"
 AWS_EKS_NAME="fortosi-demo-eks01"
 AWS_JENKINS_MASTER_EFS_ID="<removed as secret>"
-AWS_DEPLOYMENT_KUBECONFIG_EFS_ID="<removed as secret>"
-AZURE_STORAGE_ACCOUNT_NAME="fortosidemosa01"
 AZURE_MANAGED_DISK_RG="fortosi-demo-rg01"
 AZURE_MANAGED_DISK_NAME="fortosi-demo-md01"
 AZURE_SUBSCRIPTION_ID="794a7d2a-565a-4ebd-8dd9-0439763e6b55"
 AZURE_AKS_NAME="fortosi-demo-aks01"
 AZURE_AKS_RG="fortosi-demo-rg01"
-CLOUD_PROVIDER="azure"
+CLOUD_PROVIDER="aws"
 
 # execute jenkins installation
 kubectl fortosi auto-setup-vars-secret

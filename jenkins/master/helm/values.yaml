@@ -9,11 +9,6 @@ image:
 cloudProvider: <CLOUD_PROVIDER>
 efs:
   jenkinsMasterEfsId: <AWS_JENKINS_MASTER_EFS_ID>
-  deploymentKubeconfigEfsId: <AWS_DEPLOYMENT_KUBECONFIG_EFS_ID>
-storageAccount:
-  name: <AZURE_STORAGE_ACCOUNT_NAME>
-  key: <AZURE_STORAGE_ACCOUNT_KEY>
 managedDisk:
   name: <AZURE_MANAGED_DISK_NAME>
   uri: /subscriptions/<AZURE_SUBSCRIPTION_ID>/resourceGroups/<AZURE_MANAGED_DISK_RG>/providers/Microsoft.Compute/disks/<AZURE_MANAGED_DISK_NAME>
-cloudProvider: <CLOUD_PROVIDER>

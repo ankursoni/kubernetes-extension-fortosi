@@ -56,16 +56,6 @@ az account list -o table
 # substitute the value for <AZURE_SUBSCRIPTION_ID> by replacing PLACEHOLDER in the following command:
 sed -i 's|<AZURE_SUBSCRIPTION_ID>|PLACEHOLDER|g' values-secret.yaml
 
-# substitute the value for <AZURE_STORAGE_ACCOUNT_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortosidemosa01
-sed -i 's|<AZURE_STORAGE_ACCOUNT_NAME>|PLACEHOLDER|g' values-secret.yaml
-
-# determine the storage account key by substituting <AZURE_STORAGE_ACCOUNT_NAME> in the following command:
-storage_key=$(az storage account keys list --account-name <AZURE_STORAGE_ACCOUNT_NAME> --query "[0]".{Key:value} -o tsv)
-
-# substitute the value for <AZURE_STORAGE_ACCOUNT_KEY> by running the following command:
-sed -i "s|<AZURE_STORAGE_ACCOUNT_KEY>|$storage_key|g" values-secret.yaml
-
 # substitute the value for <AZURE_MANAGED_DISK_NAME> by replacing PLACEHOLDER in the command
 # PLACEHOLDER e.g. fortosi-demo-md01
 sed -i 's|<AZURE_MANAGED_DISK_NAME>|PLACEHOLDER|g' values-secret.yaml
@@ -88,31 +78,16 @@ image:
   pullPolicy: Always
 efs:
   jenkinsMasterEfsId: <removed as secret>
-  deploymentKubeconfigEfsId: <removed as secret>
-storageAccount:
-  name: fortosidemosa01
-  key: <removed as secret>
 managedDisk:
   name: fortosi-demo-md01
   uri: /subscriptions/794a7d2a-565a-4ebd-8dd9-0439763e6b55/resourceGroups/fortosi-demo-rg01/providers/Microsoft.Compute/disks/fortosi-demo-md01
 ```
 
-# Upload the kubeconfig file to azure file share for in place deployment of applications
+# Download the kubeconfig file
 ``` SH
 # get the aks credentials by substituting <AKS_NAME> and <AKS_RG> in the following command:
 az aks get-credentials -n <AKS_NAME> -g <AKS_RG> \
   --overwrite-existing -f kubeconfig-secret
-
-# copy the kubeconfig-secret as config
-cp kubeconfig-secret config
-
-# upload the kube config file by substituting <SUBSCRIPTION_ID>, <STORAGE_ACCOUNT_NAME> and <STORAGE_ACCOUNT_KEY> in the following command:
-az storage file upload --subscription <SUBSCRIPTION_ID> \
-  --account-name <STORAGE_ACCOUNT_NAME> --account-key '<STORAGE_ACCOUNT_KEY>' \
-  --share-name deployment-kubeconfig --source ./config
-
-# remove the config file
-rm config -f
 ```
 
 # Deploy jenkins master helm chart
