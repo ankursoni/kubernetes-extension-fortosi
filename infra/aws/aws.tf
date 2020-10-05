@@ -50,10 +50,6 @@ resource "aws_efs_file_system" "efs01" {
   creation_token = "${var.prefix}-${var.environment}-efs01"
 }
 
-resource "aws_efs_file_system" "efs02" {
-  creation_token = "${var.prefix}-${var.environment}-efs02"
-}
-
 
 resource "aws_eks_cluster" "eks01" {
   name     = "${var.prefix}-${var.environment}-eks01"

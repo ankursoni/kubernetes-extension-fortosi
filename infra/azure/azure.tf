@@ -85,12 +85,6 @@ resource "azurerm_role_assignment" "ra01" {
   principal_id         = azurerm_kubernetes_cluster.aks01.identity[0].principal_id
 }
 
-resource "azurerm_role_assignment" "ra02" {
-  scope                = azurerm_storage_account.sa01.id
-  role_definition_name = "Contributor"
-  principal_id         = azurerm_kubernetes_cluster.aks01.identity[0].principal_id
-}
-
 resource "azurerm_managed_disk" "md01" {
   name                 = "${var.prefix}-${var.environment}-md01"
   resource_group_name  = azurerm_resource_group.rg01.name
@@ -102,22 +96,4 @@ resource "azurerm_managed_disk" "md01" {
   tags = {
     managedby = "terraform"
   }
-}
-
-resource "azurerm_storage_account" "sa01" {
-  name                     = "${var.prefix}${var.environment}sa01"
-  resource_group_name      = azurerm_resource_group.rg01.name
-  location                 = azurerm_resource_group.rg01.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-
-  tags = {
-    managedby = "terraform"
-  }
-}
-
-resource "azurerm_storage_share" "ss01" {
-  name                 = "deployment-kubeconfig"
-  storage_account_name = azurerm_storage_account.sa01.name
-  quota                = 1
 }
