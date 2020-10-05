@@ -76,7 +76,7 @@ credentials:
           description: "kubeconfig-secret"
           scope: GLOBAL
           fileName: "kubeconfig-secret"
-          secretBytes: "{YWJjZA==}"
+          secretBytes: "{<KUBECONFIG-SECRET>}"
 
 jobs:
   - script: >
