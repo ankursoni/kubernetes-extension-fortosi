@@ -54,11 +54,11 @@ def call(String appName) {
                         else {
                             withCredentials(
                                 bindings: [
-                                    file(credentialsId: "kubeconfig-secret", variable: "kubeconfig-secret")
+                                    file(credentialsId: "kubeconfig-secret", variable: "kubeconfig")
                                 ]
                             ) {
                                 sh "mkdir -p ~/.kube"
-                                sh "cp \${kubeconfig-secret} ~/.kube/config"
+                                sh "cp \$kubeconfig ~/.kube/config"
                                 sh "cd ${SCRIPT_PATH}; ./kubernetes.sh ${KUBERNETES_NAMESPACE} ${CONTAINER_REGISTRY_URL} ${CONTAINER_REPOSITORY_NAME} ${IMAGE_TAG} ${APP_NAME}"
                             }
                         }
