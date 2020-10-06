@@ -39,9 +39,9 @@ sed -i 's|<ENVIRONMENT>|PLACEHOLDER|g' aws-secret.tfvars
 # run this to know more: "aws ec2 describe-regions -o table"
 sed -i 's|<REGION>|PLACEHOLDER|g' aws-secret.tfvars
 
-# substitute the value for <CICD_NAMESPACE> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. "jenkins"
-sed -i 's|<CICD_NAMESPACE>|PLACEHOLDER|g' aws-secret.tfvars
+# substitute the value for <NODE_COUNT> by replacing PLACEHOLDER in the command
+# PLACEHOLDER e.g. 2
+sed -i 's|<NODE_COUNT>|PLACEHOLDER|g' aws-secret.tfvars
 
 # verify the aws-secret.tfvars file by displaying its content
 cat aws-secret.tfvars
@@ -50,7 +50,7 @@ cat aws-secret.tfvars
 prefix="fortosi"
 environment="demo"
 region="ap-southeast-2"
-cicd_namespace="jenkins"
+node_count=2
 
 # if there is a correction needed then use text editor 'nano' to update the file and then press ctrl+x after you are done editing
 nano aws-secret.tfvars
