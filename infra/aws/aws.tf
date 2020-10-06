@@ -69,11 +69,9 @@ resource "aws_eks_cluster" "eks01" {
     aws_iam_role_policy_attachment.iamrpa02
   ]
 }
-output "endpoint" {
-  value = aws_eks_cluster.eks01.endpoint
-}
-output "kubeconfig-certificate-authority-data" {
-  value = aws_eks_cluster.eks01.certificate_authority[0].data
+
+output "efs_id" {
+  value = aws_efs_file_system.efs01.id
 }
 
 resource "aws_iam_role" "iamr01" {

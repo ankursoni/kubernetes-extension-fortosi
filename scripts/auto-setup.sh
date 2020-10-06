@@ -109,9 +109,7 @@ sed -i "s|<DOCKER_CONFIG>|${docker_config}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/ma
 sed -i "s|<CONTAINER_REGISTRY_URL>|${CONTAINER_REGISTRY_URL}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<CONTAINER_REPOSITORY_NAME>|${CONTAINER_REPOSITORY_NAME}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<JENKINS_IMAGE_NAME>|${JENKINS_IMAGE_NAME}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
-sed -i "s|<JENKINS_MASTER_EFS_ID>|${JENKINS_MASTER_EFS_ID}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
-sed -i "s|<DEPLOYMENT_KUBECONFIG_EFS_ID>|${DEPLOYMENT_KUBECONFIG_EFS_ID}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
-sed -i "s|<AZURE_STORAGE_ACCOUNT_NAME>|${AZURE_STORAGE_ACCOUNT_NAME}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
+sed -i "s|<AWS_EFS_ID>|${AWS_EFS_ID}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<AZURE_MANAGED_DISK_RG>|${AZURE_MANAGED_DISK_RG}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<AZURE_MANAGED_DISK_NAME>|${AZURE_MANAGED_DISK_NAME}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 

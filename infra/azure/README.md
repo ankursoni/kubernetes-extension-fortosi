@@ -78,7 +78,7 @@ sed -i 's|<VM_SIZE>|PLACEHOLDER|g' azure-secret.tfvars
 # choose 1 if you are learning and later auto-scale
 sed -i 's|<VM_COUNT>|PLACEHOLDER|g' azure-secret.tfvars
 
-# verify the auzurerm-secret.tfvars file by displaying its content
+# verify the auzure-secret.tfvars file by displaying its content
 cat azure-secret.tfvars
 
 # output should be something like this

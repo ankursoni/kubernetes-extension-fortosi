@@ -35,15 +35,15 @@ sed -i 's|<PREFIX>|PLACEHOLDER|g' aws-secret.tfvars
 sed -i 's|<ENVIRONMENT>|PLACEHOLDER|g' aws-secret.tfvars
 
 # substitute the value for <REGION> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. "ap-southeast-2" or "southeastasia" or "centralus" or "westeurope" etc.
-# run this to know more: "az account list-locations -o table"
+# PLACEHOLDER e.g. "ap-southeast-2" for Sydney or "ap-southeast-1" for Singaopore or "us-east-1" for North Virginia etc.
+# run this to know more: "aws ec2 describe-regions -o table"
 sed -i 's|<REGION>|PLACEHOLDER|g' aws-secret.tfvars
 
 # substitute the value for <CICD_NAMESPACE> by replacing PLACEHOLDER in the command
 # PLACEHOLDER e.g. "jenkins"
 sed -i 's|<CICD_NAMESPACE>|PLACEHOLDER|g' aws-secret.tfvars
 
-# verify the auzurerm-secret.tfvars file by displaying its content
+# verify the aws-secret.tfvars file by displaying its content
 cat aws-secret.tfvars
 
 # output should be something like this
