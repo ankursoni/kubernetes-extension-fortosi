@@ -1,6 +1,6 @@
 #!/bin/bash
 # kubectl extension script either copied to /usr/local/bin/kubectl-fortosi
-# or, locally executed script assumes the current/execution directory one level above kubernetes-extension-fortosi git directory
+# or, locally executed script assumes the current/execution directory in kubernetes-extension-fortosi git directory
 # $1 - secret variables values file
 
 # stop on error
@@ -35,9 +35,10 @@ docker push $CONTAINER_REGISTRY_URL/$CONTAINER_REPOSITORY_NAME/$JENKINS_IMAGE_NA
 
 
 echo -e "\nSetting kubectl context"
+rm -f $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
 if [ $CLOUD_PROVIDER = 'aws' ]
 then
-  aws eks --region $AWS_REGION_CODE update-kubeconfig --name $AWS_EKS_NAME
+  aws eks --region $AWS_REGION_CODE update-kubeconfig --name $AWS_EKS_NAME --kubeconfig $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
 elif [ $CLOUD_PROVIDER = 'azure' ]
 then
   sub=$((az account list -o table || echo '') | grep $AZURE_SUBSCRIPTION_ID)
@@ -52,7 +53,7 @@ then
     --overwrite-existing -f $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
 fi
 
-cp ~/.kube/config ~/.kube/config.bak
+cp ~/.kube/config ~/.kube/config.bak | true
 export KUBECONFIG=$FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret:~/.kube/config.bak
 kubectl config view --flatten > ~/.kube/config
 rm -f ~/.kube/config.bak
@@ -112,6 +113,12 @@ sed -i "s|<JENKINS_IMAGE_NAME>|${JENKINS_IMAGE_NAME}|g" $FORTOSI_GIT_CLONE_PATH/
 sed -i "s|<AWS_EFS_ID>|${AWS_EFS_ID}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<AZURE_MANAGED_DISK_RG>|${AZURE_MANAGED_DISK_RG}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<AZURE_MANAGED_DISK_NAME>|${AZURE_MANAGED_DISK_NAME}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
+
+# if [ $CLOUD_PROVIDER = 'aws' ]
+# then
+#   echo -e "\nDeploying aws efs csi driver"
+#   helm upgrade -i --repo https://kubernetes-sigs.github.io/aws-efs-csi-driver/ aws-efs-csi-driver aws-efs-csi-driver
+# fi
 
 echo -e "\nDeploying jenkins master helm chart"
 release=$(helm list -q -f jenkins-master)

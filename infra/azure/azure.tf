@@ -77,6 +77,13 @@ resource "azurerm_kubernetes_cluster" "aks01" {
   tags = {
     managedby = "terraform"
   }
+
+  lifecycle {
+    ignore_changes = [
+      default_node_pool.node_count,
+      default_node_pool.vm_size
+    ]
+  }
 }
 
 resource "azurerm_role_assignment" "ra01" {

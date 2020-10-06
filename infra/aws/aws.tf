@@ -7,6 +7,9 @@ variable "environment" {
 variable "region" {
   default = ""
 }
+variable "node_count" {
+  default = 1
+}
 variable "cicd_namespace" {
   default = "jenkins"
 }
@@ -64,7 +67,6 @@ resource "aws_eks_cluster" "eks01" {
   }
 
   depends_on = [
-    aws_iam_role.iamr01,
     aws_iam_role_policy_attachment.iamrpa01,
     aws_iam_role_policy_attachment.iamrpa02
   ]
@@ -103,7 +105,7 @@ resource "aws_eks_fargate_profile" "eksfp01" {
   cluster_name           = aws_eks_cluster.eks01.name
   fargate_profile_name   = "${var.prefix}-${var.environment}-eksfp01"
   pod_execution_role_arn = aws_iam_role.iamr02.arn
-  subnet_ids             = [for s in module.vpc.private_subnets : s ]
+  subnet_ids             = [for s in module.vpc.private_subnets : s]
 
   selector {
     namespace = "kube-system"
@@ -114,9 +116,10 @@ resource "aws_eks_fargate_profile" "eksfp01" {
   selector {
     namespace = "default"
   }
-  selector {
-    namespace = var.cicd_namespace
-  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.iamrpa03
+  ]
 }
 
 resource "aws_iam_role" "iamr02" {
@@ -137,4 +140,61 @@ resource "aws_iam_role" "iamr02" {
 resource "aws_iam_role_policy_attachment" "iamrpa03" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
   role       = aws_iam_role.iamr02.name
+}
+
+resource "aws_eks_node_group" "eksng01" {
+  cluster_name    = aws_eks_cluster.eks01.name
+  node_group_name = "${var.prefix}-${var.environment}-eksng01"
+  node_role_arn   = aws_iam_role.iamr03.arn
+  subnet_ids      = [for s in module.vpc.private_subnets : s]
+
+  scaling_config {
+    desired_size = var.node_count
+    max_size     = var.node_count+1
+    min_size     = 1
+  }
+
+  lifecycle {
+    ignore_changes = [
+      scaling_config[0].desired_size,
+      scaling_config[0].max_size,
+      scaling_config[0].min_size,
+    ]
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.iamrpa04,
+    aws_iam_role_policy_attachment.iamrpa05,
+    aws_iam_role_policy_attachment.iamrpa06,
+  ]
+}
+
+resource "aws_iam_role" "iamr03" {
+  name = "${var.prefix}-${var.environment}-iamr03"
+
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "iamrpa04" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.iamr03.name
+}
+
+resource "aws_iam_role_policy_attachment" "iamrpa05" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.iamr03.name
+}
+
+resource "aws_iam_role_policy_attachment" "iamrpa06" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.iamr03.name
 }
