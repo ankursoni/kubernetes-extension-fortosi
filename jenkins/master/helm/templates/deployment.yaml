@@ -31,10 +31,12 @@ spec:
             - mountPath: /var/jenkins_home
               subPath: jenkins_home
               name: jenkins-master-pvc
+          {{- if eq .Values.cloudProvider "azure" }}
             - mountPath: /var/run/docker.sock
               name: host-docker-sock
             - mountPath: /etc2
               name: host-etc
+          {{- end }}
       containers:
         - name: jenkins-master-app
           image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
@@ -46,8 +48,10 @@ spec:
             - mountPath: /var/jenkins_home
               subPath: jenkins_home
               name: jenkins-master-pvc
+          {{- if eq .Values.cloudProvider "azure" }}
             - mountPath: /var/run/docker.sock
               name: host-docker-sock
+          {{- end }}
           resources:
             requests:
               cpu: 500m
@@ -59,9 +63,11 @@ spec:
         - name: jenkins-master-pvc
           persistentVolumeClaim:
             claimName: jenkins-master-pvc
+      {{- if eq .Values.cloudProvider "azure" }}
         - name: host-docker-sock
           hostPath:
             path: /var/run/docker.sock
         - name: host-etc
           hostPath:
             path: /etc
+      {{- end -}}

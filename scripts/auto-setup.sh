@@ -114,11 +114,11 @@ sed -i "s|<AWS_EFS_ID>|${AWS_EFS_ID}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/h
 sed -i "s|<AZURE_MANAGED_DISK_RG>|${AZURE_MANAGED_DISK_RG}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 sed -i "s|<AZURE_MANAGED_DISK_NAME>|${AZURE_MANAGED_DISK_NAME}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/master/helm/values-secret.yaml
 
-# if [ $CLOUD_PROVIDER = 'aws' ]
-# then
-#   echo -e "\nDeploying aws efs csi driver"
-#   helm upgrade -i --repo https://kubernetes-sigs.github.io/aws-efs-csi-driver/ aws-efs-csi-driver aws-efs-csi-driver
-# fi
+if [ $CLOUD_PROVIDER = 'aws' ]
+then
+  echo -e "\nDeploying aws efs csi driver"
+  kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/ecr/?ref=release-1.0"
+fi
 
 echo -e "\nDeploying jenkins master helm chart"
 release=$(helm list -q -f jenkins-master)
