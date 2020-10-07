@@ -41,17 +41,56 @@ module "vpc" {
   enable_nat_gateway = true
   enable_vpn_gateway = true
 
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
   tags = {
     "kubernetes.io/cluster/${var.prefix}-${var.environment}-eks01" = "shared"
   }
 }
 
+resource "aws_security_group" "sg01" {
+  name        = "${var.prefix}-${var.environment}-sg01"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    description = "EFS from VPC"
+    from_port   = 2049
+    to_port     = 2049
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+
 resource "aws_efs_file_system" "efs01" {
   creation_token = "${var.prefix}-${var.environment}-efs01"
+  encrypted      = true
 }
+
+resource "aws_efs_mount_target" "emt01" {
+  file_system_id  = aws_efs_file_system.efs01.id
+  subnet_id       = module.vpc.private_subnets[0]
+  security_groups = [aws_security_group.sg01.id]
+}
+
+resource "aws_efs_mount_target" "emt02" {
+  file_system_id  = aws_efs_file_system.efs01.id
+  subnet_id       = module.vpc.private_subnets[1]
+  security_groups = [aws_security_group.sg01.id]
+}
+
 output "efs_id" {
   value = aws_efs_file_system.efs01.id
 }
+
 
 resource "aws_eks_cluster" "eks01" {
   name     = "${var.prefix}-${var.environment}-eks01"
@@ -132,6 +171,7 @@ resource "aws_eks_node_group" "eksng01" {
 
 resource "aws_launch_template" "lt01" {
   name          = "${var.prefix}-${var.environment}-lt01"
+  instance_type = "t2.medium"
   user_data     = base64encode(<<EOM
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
@@ -139,12 +179,17 @@ Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
 --==MYBOUNDARY==
 Content-Type: text/x-shellscript; charset="us-ascii"
 
+#!/bin/bash
+set -o xtrace
 /etc/eks/bootstrap.sh $${ClusterName} --enable-docker-bridge true
+/opt/aws/bin/cfn-signal --exit-code $? \
+--stack  $${AWS::StackName} \
+--resource NodeGroup  \
+--region $${AWS::Region}
 
 --==MYBOUNDARY==--\
 EOM
 )
-  instance_type = "t2.medium"
 }
 
 resource "aws_iam_role" "iamr02" {
