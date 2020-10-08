@@ -18,11 +18,9 @@ spec:
           value: http://jenkins-master-internal-svc.{{ .Values.namespace }}:8080
         - name: JENKINS_TUNNEL
           value: jenkins-master-internal-svc.{{ .Values.namespace }}:50000
-    {{- if eq .Values.cloudProvider "azure" }}
       volumeMounts:
         - mountPath: /var/run/docker.sock
           name: host-docker-sock
-    {{- end }}
       resources:
         requests:
           cpu: 500m
@@ -30,9 +28,7 @@ spec:
         limits:
           cpu: 1000m
           memory: 1Gi
-{{- if eq .Values.cloudProvider "azure" }}
   volumes:
     - name: host-docker-sock
       hostPath:
         path: /var/run/docker.sock
-{{- end -}}

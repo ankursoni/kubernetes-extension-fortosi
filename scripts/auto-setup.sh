@@ -64,7 +64,6 @@ sed -i "s|<CICD_NAMESPACE>|${CICD_NAMESPACE}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/
 sed -i "s|<CONTAINER_REGISTRY_URL>|${CONTAINER_REGISTRY_URL}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/agent/helm/values-secret.yaml
 sed -i "s|<CONTAINER_REPOSITORY_NAME>|${CONTAINER_REPOSITORY_NAME}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/agent/helm/values-secret.yaml
 sed -i "s|<JENKINS_IMAGE_NAME>|${JENKINS_IMAGE_NAME}|g" $FORTOSI_GIT_CLONE_PATH/jenkins/agent/helm/values-secret.yaml
-sed -i "s|<CLOUD_PROVIDER>|$CLOUD_PROVIDER|g" $FORTOSI_GIT_CLONE_PATH/jenkins/agent/helm/values-secret.yaml
 
 echo -e "\nGenerating jenkins-agent pod definition yaml"
 helm install --dry-run -o yaml jenkins-agent -f $FORTOSI_GIT_CLONE_PATH/jenkins/agent/helm/values-secret.yaml $FORTOSI_GIT_CLONE_PATH/jenkins/agent/helm/ | \

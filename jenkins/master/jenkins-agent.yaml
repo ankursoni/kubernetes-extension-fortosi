@@ -17,6 +17,9 @@
                         value: http://jenkins-master-internal-svc.jenkins:8080
                       - name: JENKINS_TUNNEL
                         value: jenkins-master-internal-svc.jenkins:50000
+                    volumeMounts:
+                      - mountPath: /var/run/docker.sock
+                        name: host-docker-sock
                     resources:
                       requests:
                         cpu: 500m
@@ -24,3 +27,7 @@
                       limits:
                         cpu: 1000m
                         memory: 1Gi
+                volumes:
+                  - name: host-docker-sock
+                    hostPath:
+                      path: /var/run/docker.sock

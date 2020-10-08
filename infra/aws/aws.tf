@@ -181,7 +181,7 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 
 #!/bin/bash
 set -o xtrace
-/etc/eks/bootstrap.sh $${ClusterName} --enable-docker-bridge true
+/etc/eks/bootstrap.sh $${ClusterName} --enable-docker-bridge 'true'
 /opt/aws/bin/cfn-signal --exit-code $? \
 --stack  $${AWS::StackName} \
 --resource NodeGroup  \
