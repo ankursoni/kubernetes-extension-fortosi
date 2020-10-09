@@ -39,14 +39,9 @@ sed -i 's|<CONTAINER_REPOSITORY_NAME>|PLACEHOLDER|g' values-secret.yaml
 # hardcoded image tags like jenkins-master and jenkins-agent will distinguish between the 2 image types
 sed -i 's|<JENKINS_IMAGE_NAME>|PLACEHOLDER|g' values-secret.yaml
 
+# substitute the value for <CLOUD_PROVIDER>
+sed -i 's|<CLOUD_PROVIDER>|azure|g' values-secret.yaml
 
-# substitute the value for <AWS_JENKINS_MASTER_EFS_ID> by replacing PLACEHOLDER in the following command:
-sed -i 's|<AWS_JENKINS_MASTER_EFS_ID>|PLACEHOLDER|g' values-secret.yaml
-
-# substitute the value for <AWS_DEPLOYMENT_KUBECONFIG_EFS_ID> by replacing PLACEHOLDER in the following command:
-sed -i 's|<AWS_DEPLOYMENT_KUBECONFIG_EFS_ID>|PLACEHOLDER|g' values-secret.yaml
-
-Or,
 
 # login to az
 az login
