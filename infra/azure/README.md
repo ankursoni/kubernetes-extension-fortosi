@@ -120,6 +120,6 @@ az aks browse -n <PREFIX>-<ENVIRONMENT>-aks01 -g <PREFIX>-<ENVIRONMENT>-rg01
 
 # Destroy environment
 ``` SH
-cd infra/azure or infra/aws
+cd infra/azure
 terraform destroy -var-file=azure-secret.tfvars
 ```

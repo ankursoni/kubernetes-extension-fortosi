@@ -166,7 +166,7 @@ kubectl fortosi auto-setup-vars-secret
 
 ## Deploy to azure kubernetes service cluster manually
 
-* Deploy azure kubernetes cluster and related resources by following the instructions in [infra/README.md](infra/README.md)
+* Deploy azure kubernetes cluster and related resources by following the instructions in [infra/azure/README.md](infra/azure/README.md)
 * Build and publish jenkins agent docker image by following the instructions in [jenkins/agent/README.md](jenkins/agent/README.md)
 * Build and publish jenkins master docker image by following the instructions in [jenkins/master/README.md](jenkins/master/README.md)
 > NOTE: make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/jenkins-vars-secret
