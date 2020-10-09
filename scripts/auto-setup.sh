@@ -24,7 +24,7 @@ then
 fi
 
 echo -e "\nBuilding docker agent image - $CONTAINER_REGISTRY_URL/$CONTAINER_REPOSITORY_NAME/$JENKINS_IMAGE_NAME:jenkins-agent"
-docker build -t $CONTAINER_REGISTRY_URL/$CONTAINER_REPOSITORY_NAME/$JENKINS_IMAGE_NAME:jenkins-agent $FORTOSI_GIT_CLONE_PATH/jenkins/agent
+docker build --build-arg CLOUD_PROVIDER=$CLOUD_PROVIDER -t $CONTAINER_REGISTRY_URL/$CONTAINER_REPOSITORY_NAME/$JENKINS_IMAGE_NAME:jenkins-agent $FORTOSI_GIT_CLONE_PATH/jenkins/agent
 
 docker logout
 
@@ -57,6 +57,13 @@ cp ~/.kube/config ~/.kube/config.bak | true
 export KUBECONFIG=$FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret:~/.kube/config.bak
 kubectl config view --flatten > ~/.kube/config
 rm -f ~/.kube/config.bak
+
+if [ $CLOUD_PROVIDER = 'aws' ]
+then
+  kubectl apply -f $FORTOSI_GIT_CLONE_PATH/infra/aws/eks-admin-service-account.yaml
+  token=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep eks-admin | awk '{print $1}') | grep token: | awk '{print $2}')
+  sed -i "/user:/a \ \ \ \ token: $token" $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
+fi
 
 echo -e "\nWriting jenkins agent helm chart secret values file - values-secret.yaml"
 cp $FORTOSI_GIT_CLONE_PATH/jenkins/agent/helm/values.yaml $FORTOSI_GIT_CLONE_PATH/jenkins/agent/helm/values-secret.yaml

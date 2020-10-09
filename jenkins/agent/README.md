@@ -2,9 +2,9 @@
 ``` SH
 cd jenkins/agent
 
-docker build -t <CONTAINER_REGISTRY_URL>/<CONTAINER_REPOSITORY_NAME>/<JENKINS_IMAGE_NAME>:jenkins-agent .
-# for e.g., for 'docker.io' as <CONTAINER_REGISTRY_URL>, 'ankursoni' as <CONTAINER_REPOSITORY_NAME> and 'fortosi' as <JENKINS_IMAGE_NAME>:
-# docker build -t docker.io/ankursoni/fortosi:jenkins-agent .
+docker build --build-arg CLOUD_PROVIDER=<CLOUD_PROVIDER> -t <CONTAINER_REGISTRY_URL>/<CONTAINER_REPOSITORY_NAME>/<JENKINS_IMAGE_NAME>:jenkins-agent .
+# for e.g., for 'aws' as <CLOUD_PROVIDER>, for 'docker.io' as <CONTAINER_REGISTRY_URL>, 'ankursoni' as <CONTAINER_REPOSITORY_NAME> and 'fortosi' as <JENKINS_IMAGE_NAME>:
+# docker build --build-arg CLOUD_PROVIDER=aws -t docker.io/ankursoni/fortosi:jenkins-agent .
 ```
 
 # Publish jenkins agent docker image (not required if you are running locally)
