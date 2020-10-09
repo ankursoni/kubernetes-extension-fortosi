@@ -1,10 +1,9 @@
 ARG BUILD_IMAGE
 FROM ${BUILD_IMAGE}
 
-RUN apt update && apt full-upgrade -y && apt install iputils-ping
-RUN ping google.com
-RUN echo "nameserver 172.20.0.10" > /etc/resolv.conf
-RUN ping google.com
+RUN ping google.com -c 4
+RUN cat /etc/resolv.conf && echo "nameserver 172.20.0.10" > /etc/resolv.conf
+RUN ping google.com -c 4
 LABEL build="temp"
 WORKDIR /app
 
