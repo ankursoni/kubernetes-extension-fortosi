@@ -19,7 +19,7 @@ def call(String appName) {
             stage ("Build") {
                 steps {
                     sh "env"
-                    sh "docker build \
+                    sh "docker build --network=host \
                             -f ${APP_PATH}/Dockerfile \
                             -t ${IMAGE_TAG} ${APP_PATH}/."
                 }
@@ -57,8 +57,8 @@ def call(String appName) {
                                     file(credentialsId: "kubeconfig-secret", variable: "kubeconfig")
                                 ]
                             ) {
-                                // sh "mkdir -p ~/.kube"
-                                // sh "cp \$kubeconfig ~/.kube/config"
+                                sh "mkdir -p ~/.kube"
+                                sh "cp \$kubeconfig ~/.kube/config"
                                 sh "cd ${SCRIPT_PATH}; ./kubernetes.sh ${KUBERNETES_NAMESPACE} ${CONTAINER_REGISTRY_URL} ${CONTAINER_REPOSITORY_NAME} ${IMAGE_TAG} ${APP_NAME}"
                             }
                         }
