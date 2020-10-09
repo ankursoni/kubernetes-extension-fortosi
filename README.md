@@ -8,7 +8,7 @@ This kubernetes extension has the following deployment topology in AWS:
 
 ![topology](docs/images/aws-topology.png)
 
-* [Elastic Kubernetes Service (EKS) with Fargate](https://aws.amazon.com/eks/) for running Jenkins.
+* [Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) for running Jenkins and [Fargate Node Profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html) for running application pods.
 * Storage
   * [Elastic File Share (EFS)](https://aws.amazon.com/efs/) for storing Jenkins home directory and storing and retrieving kubeconfig files in Azure file share.
 > NOTE: EKS with Fargate is available only in selected regions: https://docs.aws.amazon.com/eks/latest/userguide/fargate.html
@@ -18,9 +18,8 @@ This kubernetes extension has the following deployment topology in Azure:
 
 ![topology](docs/images/azure-topology.png)
 
-* [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/en-us/azure/aks/) for running Jenkins.
+* [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/en-us/azure/aks/) for running Jenkins and application pods.
 * Storage
-  * [Storage Account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview) for storing and retrieving kubeconfig files in Azure file share.
   * [Managed Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/managed-disks-overview) for storing Jenkins home directory.
 
 
