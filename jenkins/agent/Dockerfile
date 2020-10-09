@@ -34,14 +34,14 @@ RUN curl -fsSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-he
 
 ARG CLOUD_PROVIDER
 
-# # install aws cli
-# RUN [ "$CLOUD_PROVIDER" = "aws" ] && \
-#         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-#         unzip awscliv2.zip && \
-#         ./aws/install || exit 0
+# install aws cli
+RUN [ "$CLOUD_PROVIDER" = "aws" ] && \
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+        unzip awscliv2.zip && \
+        ./aws/install || exit 0
 
-# # install azure cli
-# RUN [ "$CLOUD_PROVIDER" = "azure" ] && curl -sL https://aka.ms/InstallAzureCLIDeb | bash - || exit 0
+# install azure cli
+RUN [ "$CLOUD_PROVIDER" = "azure" ] && curl -sL https://aka.ms/InstallAzureCLIDeb | bash - || exit 0
 
 # # switch back to jenkins user
 # USER jenkins
