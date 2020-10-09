@@ -29,7 +29,7 @@ def call(String appName) {
                     sh "docker build \
                             -f ${APP_PATH}/tests/Dockerfile \
                             --build-arg BUILD_IMAGE=${IMAGE_TAG} \
-                            --dns 8.8.8.8
+                            --dns 8.8.8.8 \
                             -t ${IMAGE_TAG}-test ${APP_PATH}/."
                 }
             }
