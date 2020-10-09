@@ -85,13 +85,6 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 sudo ./aws/install
 rm -rf ./aws awscliv2.zip
-
-# install efs-utils
-sudo apt-get -y install nfs-common git binutils
-git clone https://github.com/aws/efs-utils
-cd efs-utils
-./build-deb.sh
-sudo apt-get -y install ./build/amazon-efs-utils*deb
 ```
 
 Or,

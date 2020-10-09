@@ -38,7 +38,7 @@ ARG CLOUD_PROVIDER
 RUN [ "$CLOUD_PROVIDER" = "aws" ] && \
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
         unzip awscliv2.zip && \
-        ./aws/install || exit 0
+        ./aws/install && rm -rf ./aws awscliv2.zip || exit 0
 
 # install azure cli
 RUN [ "$CLOUD_PROVIDER" = "azure" ] && curl -sL https://aka.ms/InstallAzureCLIDeb | bash - || exit 0
