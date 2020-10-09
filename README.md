@@ -98,8 +98,8 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 ## Automatic installation of jenkins on kubernetes
 * Option 1: Deploy cloud kubernetes cluster and related resources by following the instructions in [infra/aws/README.md](infra/aws/README.md) or [infra/azure/README.md](infra/azure/README.md)
-* Option 2: Or, bring your own elastic kubernetes service cluster along with two elastic file systems.
-* Option 3: Or, bring your own azure kubernetes service cluster along with a storage account and managed disk on which the aks identity has contributor permissions on them.
+* Option 2: Or, bring your own elastic kubernetes service cluster along with an elastic file system having the access point in the same VPC as EKS.
+* Option 3: Or, bring your own azure kubernetes service cluster along with a managed disk on which the aks identity has contributor permissions.
 * Thereafter, follow these instructions:
 ``` SH
 # change to the directory where you want fortosi extension to be installed like, user's home (~)
