@@ -26,7 +26,7 @@ def call(String appName) {
             }
             stage ("Test") {
                 steps {
-                    sh "docker build \
+                    sh "docker build --network=host \
                             -f ${APP_PATH}/tests/Dockerfile \
                             --build-arg BUILD_IMAGE=${IMAGE_TAG} \
                             -t ${IMAGE_TAG}-test ${APP_PATH}/."
