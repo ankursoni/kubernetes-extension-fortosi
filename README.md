@@ -10,7 +10,7 @@ This kubernetes extension has the following deployment topology in AWS:
 
 * [Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) for running Jenkins and [Fargate Node Profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html) for running application pods.
 * Storage
-  * [Elastic File Share (EFS)](https://aws.amazon.com/efs/) for storing Jenkins home directory and storing and retrieving kubeconfig files in Azure file share.
+  * [Elastic File System (EFS)](https://aws.amazon.com/efs/) for storing Jenkins home directory.
 > NOTE: EKS with Fargate is available only in selected regions: https://docs.aws.amazon.com/eks/latest/userguide/fargate.html
 
 
