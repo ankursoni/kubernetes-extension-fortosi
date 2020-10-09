@@ -32,7 +32,7 @@ RUN . /jenkins-vars-secret && \
     rm /jenkins-agent.yaml /jenkins-vars-secret /kubeconfig-secret -f
 
 # jenkins automatic plugin installation
-ENV CURL_OPTIONS -sSfL
+ENV CURL_OPTIONS -sSfL0
 ENV CURL_CONNECTION_TIMEOUT 60
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
