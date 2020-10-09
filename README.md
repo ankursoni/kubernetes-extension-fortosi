@@ -149,7 +149,9 @@ AZURE_SUBSCRIPTION_ID="794a7d2a-565a-4ebd-8dd9-0439763e6b55"
 AZURE_AKS_NAME="fortosi-demo-aks01"
 AZURE_AKS_RG="fortosi-demo-rg01"
 CLOUD_PROVIDER="aws"
-
+```
+> NOTE: you can skip filling AZURE_... variable values for AWS and vice versa.
+``` SH
 # execute jenkins installation
 kubectl fortosi auto-setup-vars-secret
 
