@@ -126,6 +126,7 @@ cp auto-setup-vars auto-setup-vars-secret
 # - FORTOSI_GIT_CLONE_PATH is the local path for this cloned git repository
 # - GITHUB_ORG is your github org that contains all your projects for ci/cd requirement
 # - INIT_REPO is the git repository in your github org for the initial jenkins job creation pipeline
+# - AWS_EFS_ID can be found by running the command 'aws --region <REGION> efs describe-file-systems --query 'FileSystems[*].[Name, FileSystemId]' --output text | <PREFIX>-<ENVIRONMENT>-efs01' and copy the second value
 # - AZURE_MANAGED_DISK_RG is the azure resource group of managed disk of a minimum 16GB capacity
 # - AZURE_AKS_RG is the azure resource group of azure kubernetes service
 # - CLOUD_PROVIDER is the either aws or azure
@@ -143,7 +144,7 @@ CONTAINER_REGISTRY_USER_NAME="ankursoni"
 CONTAINER_REGISTRY_USER_PASSWORD="<removed as secret>"
 AWS_REGION_CODE="ap-southeast-2"
 AWS_EKS_NAME="fortosi-demo-eks01"
-AWS_EFS_ID="<removed as secret>"
+AWS_EFS_ID="fs-cb25ebf3"
 AZURE_MANAGED_DISK_RG="fortosi-demo-rg01"
 AZURE_MANAGED_DISK_NAME="fortosi-demo-md01"
 AZURE_SUBSCRIPTION_ID="794a7d2a-565a-4ebd-8dd9-0439763e6b55"
@@ -152,7 +153,7 @@ AZURE_AKS_RG="fortosi-demo-rg01"
 CLOUD_PROVIDER="aws"
 ```
 > NOTE:
->- You can skip filling AZURE_... variable values for AWS and vice versa.
+>- Skip filling AZURE_... variable values for AWS and vice versa.
 >- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/
 ``` SH
 # execute jenkins installation
