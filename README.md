@@ -12,7 +12,7 @@ This kubernetes extension has the following deployment topology in AWS:
 * Storage
   * [Elastic File System (EFS)](https://aws.amazon.com/efs/) for storing Jenkins home directory.
 > NOTE:
-- EKS with Fargate is available only in selected regions: https://docs.aws.amazon.com/eks/latest/userguide/fargate.html
+>- EKS with Fargate is available only in selected regions: https://docs.aws.amazon.com/eks/latest/userguide/fargate.html
 
 
 This kubernetes extension has the following deployment topology in Azure:
@@ -152,8 +152,8 @@ AZURE_AKS_RG="fortosi-demo-rg01"
 CLOUD_PROVIDER="aws"
 ```
 > NOTE:
-- You can skip filling AZURE_... variable values for AWS and vice versa.
-- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/
+>- You can skip filling AZURE_... variable values for AWS and vice versa.
+>- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/
 ``` SH
 # execute jenkins installation
 kubectl fortosi auto-setup-vars-secret
@@ -175,5 +175,5 @@ kubectl fortosi auto-setup-vars-secret
 * Build and publish jenkins agent docker image by following the instructions in [jenkins/agent/README.md](jenkins/agent/README.md)
 * Build and publish jenkins master docker image by following the instructions in [jenkins/master/README.md](jenkins/master/README.md)
 > NOTE:
-- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/jenkins-vars-secret
+>- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/jenkins-vars-secret
 * Deploy jenkins master pod and services by following the instructions in [jenkins/master/helm/README.md](jenkins/master/helm/README.md)
