@@ -19,10 +19,10 @@ variable "environment" {
 variable "location" {
   default = ""
 }
-variable "vm_size" {
+variable "node_vm_size" {
   default = "Standard_B2s"
 }
-variable "vm_count" {
+variable "node_count" {
   type    = number
   default = 1
 }
@@ -60,8 +60,8 @@ resource "azurerm_kubernetes_cluster" "aks01" {
 
   default_node_pool {
     name       = "default"
-    node_count = var.vm_count
-    vm_size    = var.vm_size
+    node_count = var.node_count
+    vm_size    = var.node_vm_size
   }
 
   identity {
@@ -80,8 +80,8 @@ resource "azurerm_kubernetes_cluster" "aks01" {
 
   lifecycle {
     ignore_changes = [
-      default_node_pool.node_count,
-      default_node_pool.vm_size
+      default_node_pool[0].node_count,
+      default_node_pool[0].vm_size
     ]
   }
 }

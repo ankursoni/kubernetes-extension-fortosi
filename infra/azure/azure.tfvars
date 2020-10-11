@@ -5,5 +5,5 @@ client_secret="<CLIENT_SECRET>"
 prefix="<PREFIX>"
 environment="<ENVIRONMENT>"
 location="<LOCATION>"
-vm_size="<VM_SIZE>"
-vm_count=<VM_COUNT>
+node_vm_size="<NODE_VM_SIZE>"
+node_count=<NODE_COUNT>

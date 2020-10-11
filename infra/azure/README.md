@@ -65,18 +65,20 @@ sed -i 's|<ENVIRONMENT>|PLACEHOLDER|g' azure-secret.tfvars
 
 # substitute the value for <LOCATION> by replacing PLACEHOLDER in the command
 # PLACEHOLDER e.g. "australiaeast" or "southeastasia" or "centralus" or "westeurope" etc.
-# run this to know more: "az account list-locations -o table"
+# run this command to know more:
+# az account list-locations -o table
 sed -i 's|<LOCATION>|PLACEHOLDER|g' azure-secret.tfvars
 
-# substitute the value for <VM_SIZE> by replacing PLACEHOLDER in the command
+# substitute the value for <NODE_VM_SIZE> by replacing PLACEHOLDER in the command
 # PLACEHOLDER e.g. "Standard_B2s" or "Standard_B2ms" or "Standard_DS2_v2" etc. with ssd disk capabilities indicated by 's'
-# run this to know more: "az vm list-sizes --location "<LOCATION>" -o table"
-sed -i 's|<VM_SIZE>|PLACEHOLDER|g' azure-secret.tfvars
+# run this command to know more:
+# az vm list-sizes --location "<LOCATION>" -o table
+sed -i 's|<NODE_VM_SIZE>|PLACEHOLDER|g' azure-secret.tfvars
 
-# substitute the value for <VM_COUNT> by replacing PLACEHOLDER in the command
+# substitute the value for <NODE_COUNT> by replacing PLACEHOLDER in the command
 # PLACEHOLDER e.g. 1 or 2 etc.
-# choose 1 if you are learning and later auto-scale
-sed -i 's|<VM_COUNT>|PLACEHOLDER|g' azure-secret.tfvars
+# choose 1 if you are learning and then later scale out more from azure portal
+sed -i 's|<NODE_COUNT>|PLACEHOLDER|g' azure-secret.tfvars
 
 # verify the auzure-secret.tfvars file by displaying its content
 cat azure-secret.tfvars
