@@ -53,7 +53,7 @@ cat aws-secret.tfvars
 prefix="fortosi"
 environment="demo"
 region="ap-southeast-2"
-node_count=2
+node_count=1
 
 # if there is a correction needed then use text editor 'nano' to update the file and then press ctrl+x after you are done editing
 nano aws-secret.tfvars
