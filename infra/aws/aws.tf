@@ -73,6 +73,10 @@ resource "aws_security_group" "sg01" {
 resource "aws_efs_file_system" "efs01" {
   creation_token = "${var.prefix}-${var.environment}-efs01"
   encrypted      = true
+
+  tags = {
+    Name = "${var.prefix}-${var.environment}-efs01"
+  }
 }
 
 resource "aws_efs_mount_target" "emt01" {

@@ -126,7 +126,7 @@ cp auto-setup-vars auto-setup-vars-secret
 # - FORTOSI_GIT_CLONE_PATH is the local path for this cloned git repository
 # - GITHUB_ORG is your github org that contains all your projects for ci/cd requirement
 # - INIT_REPO is the git repository in your github org for the initial jenkins job creation pipeline
-# - AWS_EFS_ID can be found by running the command 'aws --region <REGION> efs describe-file-systems --query 'FileSystems[*].[Name, FileSystemId]' --output text | <PREFIX>-<ENVIRONMENT>-efs01' and copy the second value
+# - AWS_EFS_ID can be found by running the command 'aws --region <REGION> efs describe-file-systems --query 'FileSystems[*].[Name, FileSystemId]' --output text | grep <PREFIX>-<ENVIRONMENT>-efs01' and copy the second value
 # - AZURE_MANAGED_DISK_RG is the azure resource group of managed disk of a minimum 16GB capacity
 # - AZURE_AKS_RG is the azure resource group of azure kubernetes service
 # - CLOUD_PROVIDER is the either aws or azure
