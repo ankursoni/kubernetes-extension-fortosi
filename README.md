@@ -26,7 +26,7 @@ This **kubernetes extension** is meant to address a fundamental requirement of a
 
 ---
 
-## Install basic, docker, kubectl, helm and cloud pre-requisites on Windows Subsystem for Linux (WSL2) or Ubuntu
+## Install basic, docker, kubectl, helm and cloud pre-requisites on [Ubuntu](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview) or Windows Subsystem for Linux aka [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 
 ### - Update and upgrade apt packages:
 ``` SH
@@ -52,7 +52,7 @@ sudo apt update
 sudo apt install yq -y
 ```
 
-### - Install docker ce:
+### - Install docker ce on Ubuntu (not on WSL2):
 ``` SH
 curl -fsSL "https://download.docker.com/linux/$(lsb_release -is | tr -td '\n' | tr [:upper:] [:lower:])/gpg" | sudo apt-key add -
 
@@ -61,6 +61,18 @@ $(lsb_release -cs | tr -td '\n' | tr [:upper:] [:lower:]) stable" | sudo tee -a 
 
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+```
+
+
+### - Install docker ce on Ubuntu WSL2 after installing docker for windows from https://docs.docker.com/docker-for-windows/ :
+``` SH
+curl -fsSL "https://download.docker.com/linux/$(lsb_release -is | tr -td '\n' | tr [:upper:] [:lower:])/gpg" | sudo apt-key add -
+
+echo "deb [arch=amd64] https://download.docker.com/linux/$(lsb_release -is | tr -td '\n' | tr [:upper:] [:lower:]) \
+$(lsb_release -cs | tr -td '\n' | tr [:upper:] [:lower:]) stable" | sudo tee -a /etc/apt/sources.list.d/docker.list
+
+sudo apt-get update
+sudo apt-get install -y docker-ce
 ```
 
 ### - Install kubectl:
