@@ -32,7 +32,7 @@ sudo apt-get update
 sudo apt-get full-upgrade -y
 ```
 
-### - Install basic prereuisites:
+### - Install basic pre-requisites:
 ``` SH
 sudo apt-get install -y \
      apt-transport-https \

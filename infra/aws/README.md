@@ -15,6 +15,8 @@ terraform -v
 
 ## - Set the values for the variables by writing to the var file - aws-secret.tfvars
 ``` SH
+# for more information on how to configure aws cli: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html
+# make sure the configured iam user has admin priveleges: https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started_create-admin-group.html 
 aws configure
 
 # copy the template variable file
@@ -23,7 +25,7 @@ cp aws.tfvars aws-secret.tfvars
 
 
 # prefix, environment and region variables
-# these 3 variables help in naming the azure resources
+# these 3 variables help in naming the aws resources
 # for e.g., eks cluster name: <PREFIX>-<ENVIRONMENT>-eks01
 
 # substitute the value for <PREFIX> by replacing PLACEHOLDER in the following command:
@@ -35,7 +37,8 @@ sed -i 's|<PREFIX>|PLACEHOLDER|g' aws-secret.tfvars
 sed -i 's|<ENVIRONMENT>|PLACEHOLDER|g' aws-secret.tfvars
 
 # substitute the value for <REGION> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. "ap-southeast-2" for Sydney or "ap-southeast-1" for Singaopore or "us-east-1" for North Virginia etc.
+# PLACEHOLDER e.g. "ap-southeast-2" for Sydney or "ap-southeast-1" for Singapore or "us-east-1" for North Virginia etc.
+# Browse https://aws.amazon.com/about-aws/global-infrastructure/regions_az/ for more regions
 # run this to know more: "aws ec2 describe-regions -o table"
 sed -i 's|<REGION>|PLACEHOLDER|g' aws-secret.tfvars
 
