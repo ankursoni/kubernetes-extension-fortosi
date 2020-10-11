@@ -1,8 +1,8 @@
 # fortosi
 
-> fórtosi in greek means loading or shipping.
+> [fórtosi](https://translate.google.com/#view=home&op=translate&sl=auto&tl=el&text=loading) as pronounced in greek means loading or shipping.
 
-This **kubernetes extension** is meant to address a fundamental requirement of any project team running their applications on kubernetes - which is to quickly provision CI/CD pipelines (on demand) for their various private/public GitHub projects/organisation using simple kubectl commands. Basically, implementing the concept of **NoOps**. It is also:
+This **kubernetes extension** is meant to address a fundamental requirement of any project team running their applications on kubernetes - which is to quickly provision CI/CD pipelines (on demand) for their various private/public GitHub projects/organisation using simple kubectl commands. Basically, implementing the concept of **No Ops**. It is also:
 1. Agnostic of cloud platform, be it AWS (EKS) or Azure (AKS) owing to wonders of kubernetes and,
 2. Agnostic of application technology framwork and currently demonstrates aspnetcore and nodejs builds happening from the exact same pipeline definition.
 
