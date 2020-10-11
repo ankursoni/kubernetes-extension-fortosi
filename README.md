@@ -64,7 +64,7 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 ```
 
 
-### - Install docker ce on Ubuntu WSL2 after installing docker for windows from https://docs.docker.com/docker-for-windows/ :
+### - Install docker ce on WSL2 after installing docker for windows from https://docs.docker.com/docker-for-windows/ :
 ``` SH
 curl -fsSL "https://download.docker.com/linux/$(lsb_release -is | tr -td '\n' | tr [:upper:] [:lower:])/gpg" | sudo apt-key add -
 
