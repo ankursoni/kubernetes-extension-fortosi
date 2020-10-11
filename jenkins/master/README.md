@@ -52,9 +52,12 @@ sed -i 's|<INIT_REPO>|PLACEHOLDER|g' jenkins-vars-secret
 
 # substitute the value for <ENABLE_LOCAL_DOCKER> by replacing PLACEHOLDER in the command
 # PLACEHOLDER e.g. true
-# enable this flag to true if you want to run jenkins in a local docker environment else keep it false
+# enable this flag to true if you want to run jenkins in a local docker environment else keep it false if you are deploying to cloud
 sed -i 's|<ENABLE_LOCAL_DOCKER>|PLACEHOLDER|g' jenkins-vars-secret
-
+```
+> NOTE:
+>- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/jenkins-vars-secret
+``` SH
 # verify the jenkins-vars-secret file by displaying its content
 cat jenkins-vars-secret
 

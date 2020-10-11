@@ -2,8 +2,8 @@
 
 > fórtosi in greek means loading or shipping.
 
-This **kubernetes extension** is meant to address a fundamental requirement of any project team running their applications on Kubernetes - which is to quickly provision CI/CD pipelines (on demand) for their various private/public GitHub projects/organisation using simple kubectl commands. Basically, implementing the concept of **NoOps**. It is also:
-1. Agnostic of cloud platform, be it AWS (EKS) or Azure (AKS) owing to Kubernetes and,
+This **kubernetes extension** is meant to address a fundamental requirement of any project team running their applications on kubernetes - which is to quickly provision CI/CD pipelines (on demand) for their various private/public GitHub projects/organisation using simple kubectl commands. Basically, implementing the concept of **NoOps**. It is also:
+1. Agnostic of cloud platform, be it AWS (EKS) or Azure (AKS) owing to wonders of kubernetes and,
 2. Agnostic of application technology framwork and currently demonstrates aspnetcore and nodejs builds happening from the exact same pipeline definition.
 
 
@@ -196,6 +196,4 @@ kubectl fortosi auto-setup-vars-secret
 * Deploy azure kubernetes cluster and related resources by following the instructions in [infra/azure/README.md](infra/azure/README.md)
 * Build and publish jenkins agent docker image by following the instructions in [jenkins/agent/README.md](jenkins/agent/README.md)
 * Build and publish jenkins master docker image by following the instructions in [jenkins/master/README.md](jenkins/master/README.md)
-> NOTE:
->- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/jenkins-vars-secret
 * Deploy jenkins master pod and services by following the instructions in [jenkins/master/helm/README.md](jenkins/master/helm/README.md)

@@ -18,9 +18,9 @@ docker push <CONTAINER_REGISTRY_URL>/<CONTAINER_REPOSITORY_NAME>/<JENKINS_IMAGE_
 # docker push docker.io/ankursoni/fortosi:jenkins-agent
 ```
 
-# Output jenkins jenkins-agent pod yaml (optional as it is checked-in already)
+# Output jenkins jenkins-agent pod yaml (not required if you are running locally)
 ``` SH
 helm template -f helm/values.yaml jenkins-agent helm
 
-# use the output from above as kubernetes pod template 'yaml' value for 'jenkins-agent' label agent in master/jenkins.yaml file
+# use the output from above as kubernetes pod template 'yaml' value for 'jenkins-agent' label agent i.e. replace <JENKINS_AGENT_TEMPLATE_YAML> value in master/jenkins.yaml file with proper yaml indentation of 14 spaces
 ```
