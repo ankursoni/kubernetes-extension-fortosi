@@ -1,31 +1,37 @@
 # fortosi
-CI/CD extension for kubernetes.
+
+> fórtosi in greek means loading or shipping.
+
+This kubectl extension is meant to address a fundamental requirement of any project team running their applications on Kubernetes - which is to quickly provision CI/CD pipelines (on demand) for their various private/public GitHub projects/organisation using simple kubectl commands. Basically, implementing the concept of **NoOps**. It is also:
+1. Agnostic of cloud platform, be it AWS (EKS) or Azure (AKS) owing to Kubernetes and,
+2. Agnostic of application technology framwork and currently demonstrates aspnetcore and nodejs builds happening from the exact same pipeline definition.
 
 
-## Deployment architecture
+## Deployment architecture in AWS
 
-This kubernetes extension has the following deployment topology in AWS:
+This kubernetes extension has the following deployment topology in **AWS**:
 
 ![topology](docs/images/aws-topology.png)
 
-* [Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) for running Jenkins and [Fargate Node Profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html) for running application pods.
-* Storage
-  * [Elastic File System (EFS)](https://aws.amazon.com/efs/) for storing Jenkins home directory.
+* [Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) with a managed node pool for running Jenkins and [Fargate Node Profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html) for running application pods.
+* [Elastic File System (EFS)](https://aws.amazon.com/efs/) for storing Jenkins home directory.
 > NOTE:
 >- EKS with Fargate is available only in selected regions: https://docs.aws.amazon.com/eks/latest/userguide/fargate.html
 
 
-This kubernetes extension has the following deployment topology in Azure:
+## Deployment architecture in Azure
+
+This kubernetes extension has the following deployment topology in **Azure**:
 
 ![topology](docs/images/azure-topology.png)
 
 * [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/en-us/azure/aks/) for running Jenkins and application pods.
-* Storage
-  * [Managed Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/managed-disks-overview) for storing Jenkins home directory.
+* [Managed Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/managed-disks-overview) for storing Jenkins home directory.
 
+---
 
 ## Install basic, docker, kubectl, helm and cloud pre-requisites on Windows Subsystem for Linux (WSL2) or Ubuntu
----
+
 ### - Update and upgrade apt packages:
 ``` SH
 sudo apt-get update
@@ -79,6 +85,7 @@ helm version
 ```
 
 ---
+
 ### - Install aws tools:
 ``` SH
 # install aws cli
@@ -95,11 +102,12 @@ Or,
 # install azure cli
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
+
 ---
 
 ## Automatic installation of jenkins on kubernetes
 * Option 1: Deploy cloud kubernetes cluster and related resources by following the instructions in [infra/aws/README.md](infra/aws/README.md) or [infra/azure/README.md](infra/azure/README.md)
-* Option 2: Or, bring your own elastic kubernetes service cluster along with an elastic file system having the access point in the same VPC as EKS.
+* Option 2: Or, bring your own elastic kubernetes service cluster along with an elastic file system having the access point in the same VPC as EKS and a security group allowing efs port '2049' from VPC.
 * Option 3: Or, bring your own azure kubernetes service cluster along with a managed disk on which the aks identity has contributor permissions.
 * Thereafter, follow these instructions:
 ``` SH
