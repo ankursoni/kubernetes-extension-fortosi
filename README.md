@@ -110,8 +110,14 @@ cd ~
 sudo echo hi
 
 # install the kubectl extension - fortosi
-# note: it will create a git clone directory - kubernetes-extension-fortosi
+```
+> NOTE:
+>- By default, it will create a git clone directory - kubernetes-extension-fortosi
+>- But, if you have cloned it already then specify your git clone path as an argument to installer
+``` SH
 curl https://raw.githubusercontent.com/ankursoni/kubernetes-extension-installers/master/fortosi-installer.sh | sudo bash
+# or,
+curl https://raw.githubusercontent.com/ankursoni/kubernetes-extension-installers/master/fortosi-installer.sh <YOUR_GIT_CLONE_PATH> | sudo bash
 
 # change the ownership of the git clone directory
 sudo chown -R $USER: kubernetes-extension-fortosi
@@ -122,14 +128,24 @@ cd kubernetes-extension-fortosi
 # prepare the auto setup script secret variables file - auto-setup-vars-secret
 cp auto-setup-vars auto-setup-vars-secret
 
-# update the secret variables file like the following, where,
+# update the secret variables file - 'auto-setup-vars-secret' like the following, where,
 # - FORTOSI_GIT_CLONE_PATH is the local path for this cloned git repository
+# - CONTAINER_REPOSITORY_NAME is the same as CONTAINER_REGISTRY_USER_NAME i.e. docherhub username if you are using dockerhub free tier
+# - GITHUB_USER_PAT (github personal access token) can be generated from https://github.com/settings/tokens
+#   with all permissions set under 'repo'
 # - GITHUB_ORG is your github org that contains all your projects for ci/cd requirement
 # - INIT_REPO is the git repository in your github org for the initial jenkins job creation pipeline
-# - AWS_EFS_ID can be found by running the command 'aws --region <REGION> efs describe-file-systems --query 'FileSystems[*].[Name, FileSystemId]' --output text | grep <PREFIX>-<ENVIRONMENT>-efs01' and copy the second value
+# - CONTAINER_REGISTRY_USER_PASSWORD can be generated as personal access token from https://hub.docker.com/settings/security if you are using dockerhub as container registry
+# - AWS_EFS_ID can be found by running the command and copying the second value from output:
+#   aws --region <REGION> efs describe-file-systems --query 'FileSystems[*].[Name, FileSystemId]' --output text | grep <PREFIX>-<ENVIRONMENT>-efs01
 # - AZURE_MANAGED_DISK_RG is the azure resource group of managed disk of a minimum 16GB capacity
 # - AZURE_AKS_RG is the azure resource group of azure kubernetes service
 # - CLOUD_PROVIDER is the either aws or azure
+```
+> NOTE:
+>- Skip filling AZURE_... variable values for AWS and vice versa.
+>- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/
+``` SH
 FORTOSI_GIT_CLONE_PATH="/home/ankur/repo/kubernetes-extension-fortosi"
 CONTAINER_REGISTRY_URL="docker.io"
 CONTAINER_REPOSITORY_NAME="ankursoni"
@@ -151,11 +167,8 @@ AZURE_SUBSCRIPTION_ID="794a7d2a-565a-4ebd-8dd9-0439763e6b55"
 AZURE_AKS_NAME="fortosi-demo-aks01"
 AZURE_AKS_RG="fortosi-demo-rg01"
 CLOUD_PROVIDER="aws"
-```
-> NOTE:
->- Skip filling AZURE_... variable values for AWS and vice versa.
->- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/
-``` SH
+
+
 # execute jenkins installation
 kubectl fortosi auto-setup-vars-secret
 
