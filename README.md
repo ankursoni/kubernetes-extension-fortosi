@@ -2,14 +2,14 @@
 
 > fórtosi in greek means loading or shipping.
 
-This kubectl extension is meant to address a fundamental requirement of any project team running their applications on Kubernetes - which is to quickly provision CI/CD pipelines (on demand) for their various private/public GitHub projects/organisation using simple kubectl commands. Basically, implementing the concept of **NoOps**. It is also:
+This **kubernetes extension** is meant to address a fundamental requirement of any project team running their applications on Kubernetes - which is to quickly provision CI/CD pipelines (on demand) for their various private/public GitHub projects/organisation using simple kubectl commands. Basically, implementing the concept of **NoOps**. It is also:
 1. Agnostic of cloud platform, be it AWS (EKS) or Azure (AKS) owing to Kubernetes and,
 2. Agnostic of application technology framwork and currently demonstrates aspnetcore and nodejs builds happening from the exact same pipeline definition.
 
 
 ## Deployment architecture in AWS
 
-This kubernetes extension has the following deployment topology in **AWS**:
+Deployment topology in **AWS**:
 
 ![topology](docs/images/aws-topology.png)
 
@@ -21,7 +21,7 @@ This kubernetes extension has the following deployment topology in **AWS**:
 
 ## Deployment architecture in Azure
 
-This kubernetes extension has the following deployment topology in **Azure**:
+Deployment topology in **Azure**:
 
 ![topology](docs/images/azure-topology.png)
 
