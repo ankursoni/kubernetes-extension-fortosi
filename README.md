@@ -64,11 +64,11 @@ echo "deb [arch=amd64] https://download.docker.com/linux/$(lsb_release -is | tr 
 $(lsb_release -cs | tr -td '\n' | tr [:upper:] [:lower:]) stable" | sudo tee -a /etc/apt/sources.list.d/docker.list
 
 sudo apt-get update
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+sudo apt-get install -y docker-ce containerd.io
 ```
 
 
-### - Install docker ce client on WSL2 after installing 'docker for windows' from [here](https://docs.docker.com/docker-for-windows/):
+### - Install docker ce 'client' on WSL2 after installing 'docker for windows' from [here](https://docs.docker.com/docker-for-windows/):
 ``` SH
 curl -fsSL "https://download.docker.com/linux/$(lsb_release -is | tr -td '\n' | tr [:upper:] [:lower:])/gpg" | sudo apt-key add -
 
@@ -76,7 +76,7 @@ echo "deb [arch=amd64] https://download.docker.com/linux/$(lsb_release -is | tr 
 $(lsb_release -cs | tr -td '\n' | tr [:upper:] [:lower:]) stable" | sudo tee -a /etc/apt/sources.list.d/docker.list
 
 sudo apt-get update
-sudo apt-get install -y docker-ce
+sudo apt-get install -y docker-ce-cli
 ```
 
 ### - Install kubectl:
