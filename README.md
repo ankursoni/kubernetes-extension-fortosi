@@ -6,6 +6,7 @@ This **kubernetes extension** is meant to address a fundamental requirement of a
 1. Agnostic of cloud platform, be it **AWS** (EKS) or **Azure** (AKS) owing to wonders of kubernetes and,
 2. Agnostic of application technology framwork and currently demonstrates aspnetcore and nodejs builds happening from the exact same pipeline definition.
 
+![high-level-flow](docs/images/high-level-flow.png)
 
 ## Deployment architecture in AWS
 
