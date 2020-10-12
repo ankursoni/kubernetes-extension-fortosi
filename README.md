@@ -24,7 +24,7 @@ This **kubernetes extension** is meant to address a fundamental requirement of a
 ## Deployment architecture in Azure
 
 * [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/en-us/azure/aks/) for running Jenkins and application pods.
-* [Managed Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/managed-disks-overview) for storing Jenkins home directory.
+* [Managed Disk](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/managed-disks-overview) for storing Jenkins home directory.
 
 ![topology](docs/images/azure-topology.png)
 
