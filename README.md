@@ -12,12 +12,14 @@ This **kubernetes extension** is meant to address a fundamental requirement of a
 
 ## Deployment architecture in AWS
 
-* [Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) with a managed node pool for running Jenkins and [Fargate Node Profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html) for running application pods.
+* [Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) with a managed node pool for running Jenkins and [Fargate Node Profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html) for running application pods in serverless node pool.
 * [Elastic File System (EFS)](https://aws.amazon.com/efs/) for storing Jenkins home directory.
 > NOTE:
 >- EKS with Fargate is available only in selected regions: https://docs.aws.amazon.com/eks/latest/userguide/fargate.html
 
 ![topology](docs/images/aws-topology.png)
+
+---
 
 ## Deployment architecture in Azure
 
