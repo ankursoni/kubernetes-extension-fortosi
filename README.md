@@ -8,22 +8,23 @@ This **kubernetes extension** is meant to address a fundamental requirement of a
 
 ![high-level-flow](docs/images/high-level-flow.png)
 
-## Deployment architecture in AWS
+---
 
-![topology](docs/images/aws-topology.png)
+## Deployment architecture in AWS
 
 * [Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) with a managed node pool for running Jenkins and [Fargate Node Profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html) for running application pods.
 * [Elastic File System (EFS)](https://aws.amazon.com/efs/) for storing Jenkins home directory.
 > NOTE:
 >- EKS with Fargate is available only in selected regions: https://docs.aws.amazon.com/eks/latest/userguide/fargate.html
 
+![topology](docs/images/aws-topology.png)
 
 ## Deployment architecture in Azure
 
-![topology](docs/images/azure-topology.png)
-
 * [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/en-us/azure/aks/) for running Jenkins and application pods.
 * [Managed Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/managed-disks-overview) for storing Jenkins home directory.
+
+![topology](docs/images/azure-topology.png)
 
 ---
 
