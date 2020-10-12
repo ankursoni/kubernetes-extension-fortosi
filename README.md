@@ -30,7 +30,7 @@ This **kubernetes extension** is meant to address a fundamental requirement of a
 
 ---
 
-## Install basic, docker, kubectl, helm and cloud pre-requisites on [Ubuntu](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview) or Windows Subsystem for Linux aka [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+## Install basic and cloud pre-requisites on [Ubuntu](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview) or Windows Subsystem for Linux aka [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 
 ### - Update and upgrade apt packages:
 ``` SH
