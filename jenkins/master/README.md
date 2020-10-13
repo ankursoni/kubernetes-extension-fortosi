@@ -43,11 +43,11 @@ sed -i 's|<CONTAINER_REGISTRY_USER_PASSWORD>|PLACEHOLDER|g' jenkins-vars-secret
 sed -i 's|<CICD_NAMESPACE>|PLACEHOLDER|g' jenkins-vars-secret
 
 # substitute the value for <GITHUB_ORG> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. BulldozerLabs
+# PLACEHOLDER e.g. 'ankursoni' for a quick demo run
 sed -i 's|<GITHUB_ORG>|PLACEHOLDER|g' jenkins-vars-secret
 
 # substitute the value for <INIT_REPO> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. fortosi
+# PLACEHOLDER e.g. 'kubernetes-extension-fortosi' for a quick demo run
 sed -i 's|<INIT_REPO>|PLACEHOLDER|g' jenkins-vars-secret
 
 # substitute the value for <ENABLE_LOCAL_DOCKER> by replacing PLACEHOLDER in the command
@@ -70,6 +70,8 @@ JENKINS_IMAGE_NAME="fortosi"
 CONTAINER_REGISTRY_USER_NAME="ankursoni"
 CONTAINER_REGISTRY_USER_PASSWORD="<removed as secret>"
 CICD_NAMESPACE="jenkins"
+GITHUB_ORG="ankursoni"
+INIT_REPO="kubernetes-extension-fortosi"
 ENABLE_LOCAL_DOCKER=true
 
 # if there is a correction needed then use text editor 'nano' to update the file and then press ctrl+x after you are done editing

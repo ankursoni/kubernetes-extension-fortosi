@@ -15,7 +15,7 @@ sed -i 's|<CICD_NAMESPACE>|PLACEHOLDER|g' values-secret.yaml
 sed -i 's|<CONTAINER_REGISTRY_URL>|PLACEHOLDER|g' values-secret.yaml
 
 # substitute the value for <CONTAINER_REPOSITORY_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. ankursoni
+# it is the same as  docherhub username if you are using dockerhub free tier
 sed -i 's|<CONTAINER_REPOSITORY_NAME>|PLACEHOLDER|g' values-secret.yaml
 
 # substitute the value for <JENKINS_IMAGE_NAME> by replacing PLACEHOLDER in the command

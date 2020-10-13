@@ -31,7 +31,7 @@ sed -i "s|<DOCKER_CONFIG>|$docker_config|g" values-secret.yaml
 sed -i 's|<CONTAINER_REGISTRY_URL>|PLACEHOLDER|g' values-secret.yaml
 
 # substitute the value for <CONTAINER_REPOSITORY_NAME> by replacing PLACEHOLDER in the command
-# PLACEHOLDER e.g. ankursoni
+# it is the same as  docherhub username if you are using dockerhub free tier
 sed -i 's|<CONTAINER_REPOSITORY_NAME>|PLACEHOLDER|g' values-secret.yaml
 
 # substitute the value for <JENKINS_IMAGE_NAME> by replacing PLACEHOLDER in the command
@@ -72,7 +72,7 @@ image:
   tag: jenkins-master
   pullPolicy: Always
 efs:
-  jenkinsMasterEfsId: <removed as secret>
+  id: 
 managedDisk:
   name: fortosi-demo-md01
   uri: /subscriptions/794a7d2a-565a-4ebd-8dd9-0439763e6b55/resourceGroups/fortosi-demo-rg01/providers/Microsoft.Compute/disks/fortosi-demo-md01
