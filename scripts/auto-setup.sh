@@ -38,17 +38,10 @@ echo -e "\nSetting kubectl context"
 rm -f $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
 if [ $CLOUD_PROVIDER = 'aws' ]
 then
-  aws eks --region $AWS_REGION_CODE update-kubeconfig --name $AWS_EKS_NAME --kubeconfig $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
+  aws eks --region $AWS_REGION_CODE update-kubeconfig --name $AWS_EKS_NAME \
+    --kubeconfig $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
 elif [ $CLOUD_PROVIDER = 'azure' ]
 then
-  sub=$((az account list -o table || echo '') | grep $AZURE_SUBSCRIPTION_ID)
-  if [ -z "$sub" ]
-  then az login
-  fi
-  az account set --subscription $AZURE_SUBSCRIPTION_ID
-  storage_key=$(az storage account keys list --account-name ${AZURE_STORAGE_ACCOUNT_NAME} --query "[0]".{Key:value} -o tsv)
-
-  rm -f $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
   az aks get-credentials -n $AZURE_AKS_NAME -g $AZURE_AKS_RG \
     --overwrite-existing -f $FORTOSI_GIT_CLONE_PATH/jenkins/master/kubeconfig-secret
 fi
