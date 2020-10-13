@@ -126,7 +126,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 # change to the directory where you want fortosi extension to be installed like, user's home (~)
 cd ~
 
-# preset sudo password in terminal session
+# preset sudo password in terminal session, so that the there are no more prompts for sudo password in further steps
 sudo echo hi
 
 # install the kubectl extension - fortosi
