@@ -52,8 +52,8 @@ sudo apt-get install -y \
 ### - Install yq:
 ``` SH
 sudo add-apt-repository ppa:rmescandon/yq
-sudo apt update
-sudo apt install yq -y
+sudo apt-get update
+sudo apt-get install yq -y
 ```
 
 ### - Install docker ce on Ubuntu (not on WSL2):
@@ -153,8 +153,8 @@ cp auto-setup-vars auto-setup-vars-secret
 # - CONTAINER_REPOSITORY_NAME is the same as CONTAINER_REGISTRY_USER_NAME i.e. docherhub username if you are using dockerhub free tier
 # - GITHUB_USER_PAT (github personal access token) can be generated from https://github.com/settings/tokens
 #   with all permissions set under 'repo'
-# - GITHUB_ORG is your github org that contains all your projects for ci/cd requirement
-# - INIT_REPO is the git repository in your github org for the initial jenkins job creation pipeline
+# - GITHUB_ORG is your github org that contains all your projects for ci/cd requirement. Use the value 'ankursoni' for a quick demo run.
+# - INIT_REPO is the git repository in your github org for the initial jenkins job creation pipeline. Use the value 'kubernetes-extension-fortosi' for a quick demo run.
 # - CONTAINER_REGISTRY_USER_PASSWORD can be generated as personal access token from https://hub.docker.com/settings/security if you are using dockerhub as container registry
 # - AWS_EFS_ID can be found by running the command and copying the second value from output:
 #   aws --region <REGION> efs describe-file-systems --query 'FileSystems[*].[Name, FileSystemId]' --output text | grep <PREFIX>-<ENVIRONMENT>-efs01
