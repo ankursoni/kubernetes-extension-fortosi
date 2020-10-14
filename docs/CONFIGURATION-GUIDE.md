@@ -30,7 +30,7 @@ this is a **pipeline as code** shared library groovy file that proves that no ma
 * jenkins/master/plugins.txt -  
 this file contains the **plugins as code** i.e. initial set of jenkins plugins to be installed on first run. You can add or remove from the list as per your needs. But this list is effective only for the first time run. Or, you can delete the jenkins home directory to simulate first time run again (not recommended).
 * jenkins/master/jenkins.yaml -  
-this file contains the **configuration as code** for various plugins and initial set of jenkins credentials that are seeded with the first time run. You can add more to it by visiting [here](https://github.com/jenkinsci/configuration-as-code-plugin)
+this file contains the **configuration as code** for various plugins and initial set of jenkins credentials that are seeded with the first time run. You can add more to it by visiting [here](https://github.com/jenkinsci/configuration-as-code-plugin).
 * jenkins/agent/Dockerfile -  
 this is the 'jenkins-agent' docker file that can be modified to add or remove the agent capabilities.
 * jenkins > credentials > global credentials > 'kubeconfig-secret' -  
