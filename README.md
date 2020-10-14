@@ -202,13 +202,13 @@ kubectl fortosi auto-setup-vars-secret
 
 ---
 
-## Build jenkins docker images and run locally
+## Build jenkins docker images and run locally (optional)
 
 * Build jenkins agent docker image by following the instructions in [jenkins/agent/README.md](jenkins/agent/README.md)
 * Build jenkins master docker image and run locally by following the instructions in [jenkins/master/README.md](jenkins/master/README.md)
 
 
-## Deploy to azure kubernetes service cluster manually
+## Learn how to deploy to azure kubernetes service cluster manually (optional)
 
 * Deploy azure kubernetes cluster and related resources by following the instructions in [infra/azure/README.md](infra/azure/README.md)
 * Build and publish jenkins agent docker image by following the instructions in [jenkins/agent/README.md](jenkins/agent/README.md)
