@@ -198,6 +198,10 @@ kubectl fortosi auto-setup-vars-secret
 
 ---
 
+## Refer to configuration guide for proper usage: [docs/CONFIGURATION-GUIDE.md](docs/CONFIGURATION-GUIDE.md)
+
+---
+
 ## Build jenkins docker images and run locally
 
 * Build jenkins agent docker image by following the instructions in [jenkins/agent/README.md](jenkins/agent/README.md)
