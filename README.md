@@ -123,6 +123,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 * Option 2: Or, bring your own elastic kubernetes service cluster along with an elastic file system having the access point in the same VPC as EKS and a security group allowing efs port '2049' from VPC.
 * Option 3: Or, bring your own azure kubernetes service cluster along with a managed disk on which the aks identity has contributor permissions.
 * Thereafter, follow these instructions:
+
 ``` SH
 # change to the directory where you want fortosi extension to be installed like, user's home (~)
 cd ~
@@ -135,6 +136,7 @@ sudo echo hi
 > NOTE:
 >- By default, it will create a git clone directory - kubernetes-extension-fortosi
 >- But, if you have cloned it already then specify your git clone path as an argument to installer
+
 ``` SH
 curl https://raw.githubusercontent.com/ankursoni/kubernetes-extension-installers/master/fortosi-installer.sh | sudo bash
 # or,
