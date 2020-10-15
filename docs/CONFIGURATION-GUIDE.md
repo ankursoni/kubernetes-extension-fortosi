@@ -21,6 +21,8 @@ this directory is designated for storing the shared library of pipeline definiti
 ## Configurability options
 
 After a demo run as described [here](../README.md#automatic-installation-of-jenkins-on-kubernetes), one can use this extension to the fullest by configuring the following options:
+* **CONTAINER_REGISTRY_URL** -  
+this variable designates your container registry url and can be any docker container registry e.g. azure container registry, google container registry, quay etc.
 * **GITHUB_ORG** -  
 this variable designates your github organisation name and can be home to multiple repositories forming the suite of applications or micro services that you intend to ship to kubernetes.
 * **INIT_REPO** - 
