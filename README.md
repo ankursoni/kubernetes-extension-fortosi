@@ -167,7 +167,7 @@ cp auto-setup-vars auto-setup-vars-secret
 ```
 > NOTE:
 >- Skip filling AZURE_... variable values for AWS and vice versa.
->- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false' in the file - jenkins/master/
+>- Make sure the value for the variable - ENABLE_LOCAL_DOCKER is set to 'false'
 
 ``` SH
 FORTOSI_GIT_CLONE_PATH="/home/ankur/repo/kubernetes-extension-fortosi"
